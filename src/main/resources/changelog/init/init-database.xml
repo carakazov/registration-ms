@@ -3,5 +3,111 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="001" author="vadim.lebediantsev">
+        <createTable tableName="oauth_refresh_details">
+            <column name="token_id" type="varchar(255)">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="token" type="bytea"/>
+            <column name="authentication" type="bytea"/>
+        </createTable>
 
+        <createTable tableName="oauth_access_token">
+            <column name="authorization_id" type="varchar(255)">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="token_id" type="varchar(255)"/>
+            <column name="token" type="bytea"/>
+            <column name="user_name" type="varchar(255)"/>
+            <column name="client_id" type="varchar(255)"/>
+            <column name="authentication" type="bytea"/>
+            <column name="refresh_token" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="oauth_client_details">
+            <column name="client_id" type="varchar(255)">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="resource_ids" type="varchar(255)"/>
+            <column name="client_secret" type="varchar(255)"/>
+            <column name="scope" type="varchar(255)"/>
+            <column name="authorized_grant_types" type="varchar(255)"/>
+            <column name="web_server_redirect_uri" type="varchar(255)"/>
+            <column name="authorities" type="varchar(255)"/>
+            <column name="access_token_validity" type="int"/>
+            <column name="refresh_token_validity" type="int"/>
+            <column name="additional_information" type="varchar(255)"/>
+            <column name="autoapprove" type="boolean"/>
+        </createTable>
+
+        <createTable tableName="service_clients">
+            <column name="id" type="bigint">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="external_id" type="uuid">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="varchar(255)">
+                <constraints foreignKeyName="service_client_details_fk" references="oauth_client_details(client_id)"/>
+            </column>
+            <column name="blocked" type="boolean"/>
+        </createTable>
+
+        <createTable tableName="service_client_history">
+            <column name="id" type="bigint">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="service_client_id" type="bigint">
+                <constraints foreignKeyName="history_service_client_fk" references="service_clients(id)"/>
+            </column>
+            <column name="event_date" type="timestamp"/>
+            <column name="event" type="varchar(25)"/>
+            <column name="operator_client_id" type="bigint">
+                <constraints foreignKeyName="history_operator_client_id" references="service_clients(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="roles">
+            <column name="id" type="bigint">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="role_title" type="varchar(25)"/>
+        </createTable>
+
+        <createTable tableName="service_client_role">
+            <column name="service_client_id" type="bigint">
+                <constraints foreignKeyName="service_client_fk" references="service_clients(id)" unique="true"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints foreignKeyName="role_fk" references="roles(id)" unique="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="service_client_role" columnNames="service_client_id, role_id"/>
+
+        <createTable tableName="system_scopes">
+            <column name="id" type="bigint">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="system_scope" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="system_scope_role">
+            <column name="role_id" type="bigint">
+                <constraints foreignKeyName="role_fk" references="roles(id)"/>
+            </column>
+            <column name="system_scope_id" type="bigint">
+                <constraints foreignKeyName="system_scope_fk" references="system_scopes(id)"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="role_id, system_scope_id" tableName="system_scope_role"/>
+    </changeSet>
 </databaseChangeLog>
