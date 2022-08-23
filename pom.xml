@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>notes.project</groupId>
-    <artifactId>file-system</artifactId>
+    <artifactId>registration-ms</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>file-system</name>
-    <description>file-system</description>
+    <name>registration-ms</name>
+    <description>custom registration and authorization ms</description>
     <properties>
         <java.version>11</java.version>
     </properties>
