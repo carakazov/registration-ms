@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ServiceClientRepository extends JpaRepository<ServiceClient, Long> {
-    ServiceClient findByUsername(String username);
+    ServiceClient findByUsernameAndOauthClientClientId(String username, String clientId);
 }

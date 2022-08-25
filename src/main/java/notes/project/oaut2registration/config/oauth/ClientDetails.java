@@ -2,7 +2,11 @@ package notes.project.oaut2registration.config.oauth;
 
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import notes.project.oaut2registration.model.Role;
 import notes.project.oaut2registration.model.ServiceClient;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
