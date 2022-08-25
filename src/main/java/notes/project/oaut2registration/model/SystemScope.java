@@ -1,9 +1,6 @@
 package notes.project.oaut2registration.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -16,5 +13,6 @@ public class SystemScope {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private Scope systemScope;
 }
