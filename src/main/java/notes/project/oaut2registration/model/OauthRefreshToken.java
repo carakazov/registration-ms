@@ -8,8 +8,8 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-@Entity(name = "oauth_refresh_details")
-public class OauthRefreshDetails {
+@Entity(name = "oauth_refresh_token")
+public class OauthRefreshToken {
     @Id
     private String tokenId;
 
