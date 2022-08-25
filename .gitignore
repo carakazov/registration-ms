@@ -30,6 +30,7 @@ build/
 
 ### VS Code ###
 .vscode/
-
+public.key
+private.key
 root/
 archive-root/

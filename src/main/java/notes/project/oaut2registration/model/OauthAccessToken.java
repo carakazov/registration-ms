@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Entity(name = "oauth_access_token")
 public class OauthAccessToken {
     @Id
-    private String authorizationId;
+    private String authenticationId;
 
     private String tokenId;
 

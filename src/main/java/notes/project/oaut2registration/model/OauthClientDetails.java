@@ -13,7 +13,7 @@ public class OauthClientDetails {
     @Id
     private String clientId;
 
-    private String resoureIds;
+    private String resourceIds;
 
     private String clientSecret;
 
