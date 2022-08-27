@@ -16,3 +16,15 @@ application:
   errorMessages:
     internalError: internal error
     wrongRequestParameters: wrong request parameters
+    wrongAccessTokenValidity: Access token validity should be less than 10000 and more than 10.
+    wrongRefreshTokenValidity: Refresh token validity shoul be less than 10000 and more than 10.
+    refreshValidityShouldBeMoreThanAccessValidity: Refresh validity can not be less than access validity.
+    clientAlreadyExists: Client already exists. Try another clientId.
+  systemRegistrationKeyWords:
+    - my-super-secret
+    - another-my-secret
+    - with-this-you-can-registrate
+  maxAccessTokenValidity: 10000
+  minAccessTokenValidity: 10
+  maxRefreshTokenValidity: 10000
+  minRefreshTokenValidity: 10

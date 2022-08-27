@@ -32,12 +32,4 @@ public class OauthClientDetails {
     private String additionalInformation;
 
     private Boolean autoapprove;
-
-    @ManyToMany
-    @JoinTable(
-        name = "auth_service_role_client",
-        joinColumns = @JoinColumn(name = "oauth_client_id"),
-        inverseJoinColumns = @JoinColumn(name = "auth_service_role_id")
-    )
-    private List<AuthServiceRole> roles;
 }

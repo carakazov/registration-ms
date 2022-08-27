@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import notes.project.oaut2registration.dto.ErrorDto;
 import notes.project.oaut2registration.dto.ValidationErrorDto;
 import notes.project.oaut2registration.exception.ValidationException;
+import notes.project.oaut2registration.exception.WrongRegistrationPasswordException;
 import notes.project.oaut2registration.utils.ErrorHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,11 @@ public class WebControllerAdvice {
     public ResponseEntity<ValidationErrorDto> handleValidationError(ValidationException exception) {
         ValidationErrorDto validationErrorDto = errorHelper.from(exception);
         return new ResponseEntity<>(validationErrorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WrongRegistrationPasswordException.class)
+    public ResponseEntity<?> handleWrongRegistrationCodeException(WrongRegistrationPasswordException exception) {
+        errorHelper.from(exception);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
