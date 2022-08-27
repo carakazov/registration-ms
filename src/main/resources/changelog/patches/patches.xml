@@ -12,4 +12,6 @@
    <include file="changelog/patches/system-registration/system-role-table-delete.xml"/>
    <!--role-creation-->
    <include file="changelog/patches/role-creation/role-creation.xml"/>
+   <!--insert-scope-->
+   <include file="changelog/patches/role-creation/insert-scope.xml"/>
 </databaseChangeLog>

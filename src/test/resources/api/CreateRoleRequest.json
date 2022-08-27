@@ -1,0 +1,6 @@
+{
+  "roleTitle": "TEST",
+  "scopes": [
+    "CHANGE_PASSWORD"
+  ]
+}

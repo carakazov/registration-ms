@@ -1,11 +1,18 @@
 package notes.project.oaut2registration.it;
 
+import java.io.IOException;
+import java.util.Collections;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import notes.project.oaut2registration.config.ApplicationProperties;
+import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.utils.TestAsyncTaskExecutor;
 import org.apache.commons.dbcp.cpdsadapter.DriverAdapterCPDS;
 import org.apache.commons.dbcp.datasources.SharedPoolDataSource;
@@ -19,7 +26,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
                 classes = AbstractIntegrationTest.IntegrationTestConfiguration.class)
@@ -31,6 +45,8 @@ public abstract class AbstractIntegrationTest {
     protected ApplicationProperties applicationProperties;
     @Inject
     protected ObjectMapper objectMapper;
+    @Inject
+    protected WebApplicationContext context;
 
 
     @ActiveProfiles("it")
@@ -57,4 +73,20 @@ public abstract class AbstractIntegrationTest {
     @Inject
     protected TestEntityManager testEntityManager;
 
+    public static class IntegrationTestFilter extends OncePerRequestFilter {
+        @Override
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+            filterChain.doFilter(request, response);
+        }
+    }
+
+    protected void setSecurityContext(Scope scope) {
+        SecurityContextHolder.getContext().setAuthentication(
+            new UsernamePasswordAuthenticationToken(
+                CLIENT_ID,
+                null,
+                Collections.singletonList(new SimpleGrantedAuthority(scope.toString()))
+            )
+        );
+    }
 }
