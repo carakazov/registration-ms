@@ -8,6 +8,8 @@
    <include file="changelog/patches/change-table-column-name/change-table-column-name.xml"/>
    <!--system-registration-->
    <include file="changelog/patches/system-registration/system-registration.xml"/>
-
+   <!--system-role-delete-->
    <include file="changelog/patches/system-registration/system-role-table-delete.xml"/>
+   <!--role-creation-->
+   <include file="changelog/patches/role-creation/role-creation.xml"/>
 </databaseChangeLog>

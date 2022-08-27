@@ -16,6 +16,10 @@ public class Role {
 
     private String roleTitle;
 
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private OauthClientDetails details;
+
     @ManyToMany
     @JoinTable(
         name = "system_scope_role",

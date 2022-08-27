@@ -41,8 +41,8 @@
         </createTable>
 
         <createTable tableName="service_clients">
-            <column name="id" type="bigint">
-                <constraints nullable="false" unique="true" primaryKey="true"/>
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true" />
             </column>
             <column name="external_id" type="uuid">
                 <constraints nullable="false" unique="true"/>
@@ -63,7 +63,7 @@
         </createTable>
 
         <createTable tableName="service_client_history">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="service_client_id" type="bigint">
@@ -77,14 +77,14 @@
         </createTable>
 
         <createTable tableName="roles">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="role_title" type="varchar(25)"/>
         </createTable>
 
         <createTable tableName="service_client_role">
-            <column name="service_client_id" type="bigint">
+            <column name="service_client_id" type="bigint" autoIncrement="true">
                 <constraints foreignKeyName="service_client_fk" references="service_clients(id)" unique="true" nullable="false"/>
             </column>
             <column name="role_id" type="bigint">
@@ -94,14 +94,14 @@
         <addPrimaryKey tableName="service_client_role" columnNames="service_client_id, role_id"/>
 
         <createTable tableName="system_scopes">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="system_scope" type="varchar(255)"/>
         </createTable>
 
         <createTable tableName="system_scope_role">
-            <column name="role_id" type="bigint">
+            <column name="role_id" type="bigint" autoIncrement="true">
                 <constraints foreignKeyName="scope_role_fk" references="roles(id)" nullable="false"/>
             </column>
             <column name="system_scope_id" type="bigint">
@@ -111,14 +111,14 @@
         <addPrimaryKey columnNames="role_id, system_scope_id" tableName="system_scope_role"/>
 
         <createTable tableName="auth_service_roles">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="auth_service_role_title" type="varchar(25)"/>
         </createTable>
 
         <createTable tableName="auth_service_role_client">
-            <column name="auth_service_role_id" type="bigint">
+            <column name="auth_service_role_id" type="bigint" autoIncrement="true">
                 <constraints foreignKeyName="auth_service_role_role_fk" nullable="false" unique="true" references="auth_service_roles(id)"/>
             </column>
             <column name="oauth_client_id" type="varchar(255)">

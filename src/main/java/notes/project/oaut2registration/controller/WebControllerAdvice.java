@@ -3,6 +3,8 @@ package notes.project.oaut2registration.controller;
 import lombok.RequiredArgsConstructor;
 import notes.project.oaut2registration.dto.ErrorDto;
 import notes.project.oaut2registration.dto.ValidationErrorDto;
+import notes.project.oaut2registration.exception.NotFoundException;
+import notes.project.oaut2registration.exception.SecurityContextException;
 import notes.project.oaut2registration.exception.ValidationException;
 import notes.project.oaut2registration.exception.WrongRegistrationPasswordException;
 import notes.project.oaut2registration.utils.ErrorHelper;
@@ -40,5 +42,17 @@ public class WebControllerAdvice {
     public ResponseEntity<?> handleWrongRegistrationCodeException(WrongRegistrationPasswordException exception) {
         errorHelper.from(exception);
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorDto> handleNotFoundException(NotFoundException exception) {
+        ErrorDto errorDto = errorHelper.from(exception);
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SecurityContextException.class)
+    public ResponseEntity<?> handleSecurityContextException(SecurityContextException exception) {
+        errorHelper.from(exception);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

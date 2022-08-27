@@ -1,6 +1,7 @@
 package notes.project.oaut2registration.config.oauth;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.FilterChain;
@@ -18,6 +19,7 @@ import notes.project.oaut2registration.config.oauth.util.impl.TokenVerifierImpl;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.repository.ServiceClientRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,18 +41,25 @@ public class InnerScopeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(AUTHORIZATION_HEADER);
+        Authentication authentication;
         if(StringUtils.isNotEmpty(authHeader)) {
             JwtDto jwtDto = tokenDecoder.decode(authHeader);
             tokenVerifier.verify(jwtDto);
             List<String> scopes = innerScopeFilterService.extractScopes(jwtDto);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
+            authentication = new UsernamePasswordAuthenticationToken(
                 jwtDto.getClientId(),
                 null,
                 scopes.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
             );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            authentication = new UsernamePasswordAuthenticationToken(
+                null,
+                null,
+                Collections.singletonList(new SimpleGrantedAuthority(Scope.ANON.toString()))
+            );
         }
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 }
