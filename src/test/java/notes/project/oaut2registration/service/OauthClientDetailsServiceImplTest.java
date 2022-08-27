@@ -1,8 +1,10 @@
 package notes.project.oaut2registration.service;
 
+import java.util.Optional;
 import javax.validation.Valid;
 
 import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.repository.OauthClientDetailsServiceRepository;
 import notes.project.oaut2registration.service.impl.OauthClientDetailsServiceImpl;
@@ -19,6 +21,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 import static org.mockito.Mockito.*;
@@ -45,7 +49,7 @@ class OauthClientDetailsServiceImplTest {
     }
 
     @Test
-    void validateSuccess() {
+    void registerSystemClientSuccess() {
         SystemRegistrationRequestDto request = ApiUtils.systemRegistrationRequestDto();
         OauthClientDetails details = DbUtils.oauthClientDetails();
 
@@ -58,5 +62,34 @@ class OauthClientDetailsServiceImplTest {
         verify(passwordEncoder).encode(CLIENT_SECRET);
         verify(repository).save(details);
         verifyNoMoreInteractions(passwordEncoder, repository);
+    }
+
+    @Test
+    void findByClientIdSuccess() {
+        Optional<OauthClientDetails> expected = Optional.of(DbUtils.oauthClientDetails());
+
+        when(repository.findByClientId(any())).thenReturn(expected);
+
+        OauthClientDetails actual = service.findByClientId(CLIENT_ID);
+
+        assertEquals(expected.get(), actual);
+
+        verify(repository).findByClientId(expected.get().getClientId());
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void findByClientIdWhenNotFound() {
+        Optional<OauthClientDetails> expected = Optional.empty();
+
+        when(repository.findByClientId(any())).thenReturn(expected);
+
+        assertThrows(
+            NotFoundException.class,
+            () -> service.findByClientId(CLIENT_ID)
+        );
+
+        verify(repository).findByClientId(CLIENT_ID);
+        verifyNoMoreInteractions(repository);
     }
 }

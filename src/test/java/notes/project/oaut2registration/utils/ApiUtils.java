@@ -6,12 +6,26 @@ import lombok.experimental.UtilityClass;
 import notes.project.oaut2registration.dto.*;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.exception.ValidationException;
+import notes.project.oaut2registration.model.Scope;
+import notes.project.oaut2registration.utils.validation.dto.CreateRoleValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.SystemRegistrationValidationDto;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+
+    public static CreateRoleRequestDto createRoleRequestDto() {
+        return new CreateRoleRequestDto()
+            .setRoleTitle(ROLE_TITLE)
+            .setScopes(Collections.singletonList(Scope.ANON));
+    }
+
+    public static CreateRoleValidationDto createRoleValidationDto() {
+        return new CreateRoleValidationDto()
+            .setRoleExists(Boolean.FALSE)
+            .setRoleTitle(ROLE_TITLE);
+    }
 
     public static SystemRegistrationValidationDto systemRegistrationValidationDto() {
         return new SystemRegistrationValidationDto()

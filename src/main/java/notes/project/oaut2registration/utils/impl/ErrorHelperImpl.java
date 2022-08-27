@@ -3,12 +3,10 @@ package notes.project.oaut2registration.utils.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import notes.project.oaut2registration.config.ApplicationProperties;
-import notes.project.oaut2registration.exception.WrongRegistrationPasswordException;
+import notes.project.oaut2registration.exception.*;
 import notes.project.oaut2registration.utils.ErrorHelper;
 import notes.project.oaut2registration.dto.ErrorDto;
 import notes.project.oaut2registration.dto.ValidationErrorDto;
-import notes.project.oaut2registration.exception.ExceptionCode;
-import notes.project.oaut2registration.exception.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -51,6 +49,20 @@ public class ErrorHelperImpl implements ErrorHelper {
         errorDto.setMessage(getMessageByCode(ExceptionCode.WRONG_REQUEST_PARAMETERS));
         errorDto.setCode(ExceptionCode.WRONG_REQUEST_PARAMETERS.getCode());
         return errorDto;
+    }
+
+    @Override
+    public ErrorDto from(NotFoundException exception) {
+        logException(exception);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage(getMessageByCode(ExceptionCode.NOT_FOUND_EXCEPTION));
+        errorDto.setCode(ExceptionCode.NOT_FOUND_EXCEPTION.getCode());
+        return errorDto;
+    }
+
+    @Override
+    public void from(SecurityContextException exception) {
+        logException(exception);
     }
 
     @Override

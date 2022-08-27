@@ -27,4 +27,7 @@ public class TestDataConstants {
     public static final String AUTHORIZED_GRANT_TYPES = "password,refresh_token,client_credentials";
     public static final String OAUTH_CLIENT_AUTHORITY = Authority.OAUTH_CLIENT.toString();
     public static final String PASSWORD_ENCODED = "$2y$10$7nVqhnatX2u/eqekqv13ROjATEQIfkQr3ihtJahthID.WfJ6haeIu";
+
+    public static final String ROLE_TITLE = "TEST_ROLE";
+    public static final String RESERVED_ROLE = "OAUTH_CLIENT";
 }

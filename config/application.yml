@@ -20,6 +20,9 @@ application:
     wrongRefreshTokenValidity: Refresh token validity shoul be less than 10000 and more than 10.
     refreshValidityShouldBeMoreThanAccessValidity: Refresh validity can not be less than access validity.
     clientAlreadyExists: Client already exists. Try another clientId.
+    requestedResourceNotFound: Requested resource not found.
+    roleAlreadyExists: Such role already exists in your service. Try another one.
+    reservedRoleTitle: Role titles OAUTH_CLIENT and OAUTH_ADMIN are reserved. You can not use them.
   systemRegistrationKeyWords:
     - my-super-secret
     - another-my-secret
