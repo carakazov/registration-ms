@@ -3,6 +3,7 @@ package notes.project.oaut2registration.utils.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import notes.project.oaut2registration.config.ApplicationProperties;
+import notes.project.oaut2registration.exception.WrongRegistrationPasswordException;
 import notes.project.oaut2registration.utils.ErrorHelper;
 import notes.project.oaut2registration.dto.ErrorDto;
 import notes.project.oaut2registration.dto.ValidationErrorDto;
@@ -33,6 +34,7 @@ public class ErrorHelperImpl implements ErrorHelper {
             error.setCode(item.getCode());
             errors.add(error);
         });
+        logValidationException(validationException);
         return new ValidationErrorDto(errors);
     }
 
@@ -51,12 +53,21 @@ public class ErrorHelperImpl implements ErrorHelper {
         return errorDto;
     }
 
+    @Override
+    public void from(WrongRegistrationPasswordException exception) {
+        logException(exception);
+    }
+
     private String getMessageByCode(ExceptionCode code) {
         String exceptionMessage = properties.getMessage(code.getCode());
         if(StringUtils.isNotEmpty(exceptionMessage)) {
             return exceptionMessage;
         }
         return null;
+    }
+
+    private void logValidationException(ValidationException exception) {
+        exception.getCodes().forEach(item -> log.error("Validation exception. Code: {}", item));
     }
 
     private void logException(Exception exception) {

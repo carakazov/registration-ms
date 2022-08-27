@@ -1,0 +1,7 @@
+{
+  "clientId": "my-client-id",
+  "clientSecret": "my-secret",
+  "registrationPassword": "my-super-secret",
+  "accessTokenValidity": "500",
+  "refreshTokenValidity": "900"
+}

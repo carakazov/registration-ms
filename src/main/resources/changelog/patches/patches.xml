@@ -4,6 +4,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+   <!--change-table-column-name-->
    <include file="changelog/patches/change-table-column-name/change-table-column-name.xml"/>
+   <!--system-registration-->
+   <include file="changelog/patches/system-registration/system-registration.xml"/>
 
+   <include file="changelog/patches/system-registration/system-role-table-delete.xml"/>
 </databaseChangeLog>
