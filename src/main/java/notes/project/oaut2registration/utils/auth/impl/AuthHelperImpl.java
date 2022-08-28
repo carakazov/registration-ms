@@ -1,5 +1,6 @@
 package notes.project.oaut2registration.utils.auth.impl;
 
+import java.util.List;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,10 @@ public class AuthHelperImpl implements AuthHelper {
             throw new SecurityContextException("No principal found in context");
         }
         return clientId.toString();
+    }
+
+    @Override
+    public String getCurrentAuthority() {
+        return List.of(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray()).get(0).toString();
     }
 }

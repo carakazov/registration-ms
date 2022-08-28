@@ -1,13 +1,13 @@
-package notes.project.oaut2registration.service.impl;
+package notes.project.oaut2registration.service.api.impl;
 
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.repository.OauthClientDetailsServiceRepository;
-import notes.project.oaut2registration.service.OauthClientDetailsService;
+import notes.project.oaut2registration.service.api.OauthClientDetailsService;
 import notes.project.oaut2registration.utils.mapper.CreateOauthClientDetailsMapper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.SystemRegistrationValidationDto;

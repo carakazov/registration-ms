@@ -3,7 +3,6 @@ package notes.project.oaut2registration.utils;
 import java.util.Collections;
 
 import lombok.experimental.UtilityClass;
-import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.model.Role;
 import notes.project.oaut2registration.model.Scope;
@@ -21,7 +20,8 @@ public class DbUtils {
             .setAuthorities(OAUTH_CLIENT_AUTHORITY)
             .setAuthorizedGrantTypes(AUTHORIZED_GRANT_TYPES)
             .setAccessTokenValidity(ACCESS_TOKEN_VALIDITY)
-            .setRefreshTokenValidity(REFRESH_TOKEN_VALIDITY);
+            .setRefreshTokenValidity(REFRESH_TOKEN_VALIDITY)
+            .setAnonRegistrationEnabled(Boolean.TRUE);
     }
 
     public static SystemScope systemScope() {

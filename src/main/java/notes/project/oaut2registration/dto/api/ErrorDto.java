@@ -1,4 +1,4 @@
-package notes.project.oaut2registration.dto;
+package notes.project.oaut2registration.dto.api;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServiceClientRepository extends JpaRepository<ServiceClient, Long> {
     ServiceClient findByUsernameAndOauthClientClientId(String username, String clientId);
+    Boolean existsByUsernameAndOauthClientClientId(String username, String clientId);
 }

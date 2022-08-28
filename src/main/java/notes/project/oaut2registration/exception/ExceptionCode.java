@@ -11,7 +11,11 @@ public enum ExceptionCode {
     CLIENT_ALREADY_EXISTS("clientAlreadyExists"),
     NOT_FOUND_EXCEPTION("requestedResourceNotFound"),
     ROLE_ALREADY_EXISTS("roleAlreadyExists"),
-    RESERVED_ROLE_TITLE("reservedRoleTitle");
+    RESERVED_ROLE_TITLE("reservedRoleTitle"),
+    ADDITIONAL_INFO_SENDING_EXCEPTION("additionalInfoSendingException"),
+    ANON_REGISTRATION_NOT_ENABLED("anonRegistrationNotEnabled"),
+    USERNAME_ALREADY_EXISTS("usernameAlreadyExists"),
+    DATE_OF_BIRTH_IN_FUTURE("dateOfBirthInFuture");
     @Getter
     private final String code;
 

@@ -3,7 +3,10 @@ package notes.project.oaut2registration.utils;
 import java.util.Collections;
 
 import lombok.experimental.UtilityClass;
-import notes.project.oaut2registration.dto.*;
+import notes.project.oaut2registration.dto.api.CreateRoleRequestDto;
+import notes.project.oaut2registration.dto.api.ErrorDto;
+import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.dto.api.ValidationErrorDto;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.exception.ValidationException;
 import notes.project.oaut2registration.model.Scope;
@@ -39,7 +42,8 @@ public class ApiUtils {
             .setClientSecret(CLIENT_SECRET)
             .setRegistrationPassword(REGISTRATION_PASSWORD)
             .setAccessTokenValidity(ACCESS_TOKEN_VALIDITY)
-            .setRefreshTokenValidity(REFRESH_TOKEN_VALIDITY);
+            .setRefreshTokenValidity(REFRESH_TOKEN_VALIDITY)
+            .setAnonRegistrationEnabled(Boolean.TRUE);
     }
 
     public static ErrorDto errorDto() {

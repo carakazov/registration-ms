@@ -18,5 +18,6 @@ public class DataSourceConfiguration {
         dataSource.setUser("registration_service_user");
         dataSource.setPassword("1q2w3e");
         return dataSource;
+
     }
 }

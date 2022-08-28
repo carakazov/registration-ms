@@ -1,11 +1,8 @@
 package notes.project.oaut2registration.utils;
 
-import notes.project.oaut2registration.dto.ErrorDto;
-import notes.project.oaut2registration.dto.ValidationErrorDto;
-import notes.project.oaut2registration.exception.NotFoundException;
-import notes.project.oaut2registration.exception.SecurityContextException;
-import notes.project.oaut2registration.exception.ValidationException;
-import notes.project.oaut2registration.exception.WrongRegistrationPasswordException;
+import notes.project.oaut2registration.dto.api.ErrorDto;
+import notes.project.oaut2registration.dto.api.ValidationErrorDto;
+import notes.project.oaut2registration.exception.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public interface ErrorHelper {
@@ -13,6 +10,8 @@ public interface ErrorHelper {
     ErrorDto from(Exception exception);
     ErrorDto from(MethodArgumentNotValidException exception);
     ErrorDto from(NotFoundException exception);
+    ErrorDto from(RegistrationSystemException exception);
+    ErrorDto from(AnonRegistrationNotEnabledException exception);
 
     void from(SecurityContextException exception);
     void from(WrongRegistrationPasswordException exception);

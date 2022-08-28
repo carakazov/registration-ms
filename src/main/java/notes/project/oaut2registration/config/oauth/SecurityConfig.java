@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable()
             .authorizeRequests()
             .antMatchers("/role").hasAnyAuthority("OAUTH_CLIENT","CREATE_ROLE")
+            .antMatchers("/client").hasAnyAuthority("OAUTH_CLIENT", "REGISTER_USER", "ANON")
             .and()
             .addFilterBefore(new InnerScopeFilter(innerScopeFilterService), BasicAuthenticationFilter.class);
     }

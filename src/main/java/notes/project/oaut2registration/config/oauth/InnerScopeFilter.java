@@ -17,12 +17,10 @@ import notes.project.oaut2registration.config.oauth.util.impl.TokenDecoderImpl;
 import notes.project.oaut2registration.config.oauth.util.impl.TokenVerifierImpl;
 import notes.project.oaut2registration.model.Scope;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class InnerScopeFilter extends OncePerRequestFilter {

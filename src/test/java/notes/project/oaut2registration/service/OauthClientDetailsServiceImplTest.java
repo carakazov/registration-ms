@@ -1,13 +1,13 @@
 package notes.project.oaut2registration.service;
 
 import java.util.Optional;
-import javax.validation.Valid;
 
-import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.repository.OauthClientDetailsServiceRepository;
-import notes.project.oaut2registration.service.impl.OauthClientDetailsServiceImpl;
+import notes.project.oaut2registration.service.api.OauthClientDetailsService;
+import notes.project.oaut2registration.service.api.impl.OauthClientDetailsServiceImpl;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.mapper.CreateOauthClientDetailsMapper;

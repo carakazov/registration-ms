@@ -1,12 +1,9 @@
 package notes.project.oaut2registration.controller;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.ErrorDto;
-import notes.project.oaut2registration.dto.ValidationErrorDto;
-import notes.project.oaut2registration.exception.NotFoundException;
-import notes.project.oaut2registration.exception.SecurityContextException;
-import notes.project.oaut2registration.exception.ValidationException;
-import notes.project.oaut2registration.exception.WrongRegistrationPasswordException;
+import notes.project.oaut2registration.dto.api.ErrorDto;
+import notes.project.oaut2registration.dto.api.ValidationErrorDto;
+import notes.project.oaut2registration.exception.*;
 import notes.project.oaut2registration.utils.ErrorHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,5 +51,17 @@ public class WebControllerAdvice {
     public ResponseEntity<?> handleSecurityContextException(SecurityContextException exception) {
         errorHelper.from(exception);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(RegistrationSystemException.class)
+    public ResponseEntity<ErrorDto> handleRegistrationSystemException(RegistrationSystemException exception) {
+        ErrorDto errorDto = errorHelper.from(exception);
+        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AnonRegistrationNotEnabledException.class)
+    public ResponseEntity<ErrorDto> handleAnonRegistrationNotEnabled(AnonRegistrationNotEnabledException exception) {
+        ErrorDto errorDto = errorHelper.from(exception);
+        return new ResponseEntity<>(errorDto, HttpStatus.FORBIDDEN);
     }
 }

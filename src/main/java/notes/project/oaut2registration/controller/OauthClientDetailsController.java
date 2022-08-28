@@ -5,8 +5,8 @@ import javax.validation.Valid;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
-import notes.project.oaut2registration.service.OauthClientDetailsService;
+import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.service.api.OauthClientDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

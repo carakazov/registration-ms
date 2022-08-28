@@ -1,6 +1,6 @@
 package notes.project.oaut2registration.utils.mapper;
 
-import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.model.Authority;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import org.mapstruct.Mapper;

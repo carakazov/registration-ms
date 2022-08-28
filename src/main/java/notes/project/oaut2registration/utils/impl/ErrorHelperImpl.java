@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import notes.project.oaut2registration.config.ApplicationProperties;
 import notes.project.oaut2registration.exception.*;
 import notes.project.oaut2registration.utils.ErrorHelper;
-import notes.project.oaut2registration.dto.ErrorDto;
-import notes.project.oaut2registration.dto.ValidationErrorDto;
+import notes.project.oaut2registration.dto.api.ErrorDto;
+import notes.project.oaut2registration.dto.api.ValidationErrorDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,6 +57,24 @@ public class ErrorHelperImpl implements ErrorHelper {
         ErrorDto errorDto = new ErrorDto();
         errorDto.setMessage(getMessageByCode(ExceptionCode.NOT_FOUND_EXCEPTION));
         errorDto.setCode(ExceptionCode.NOT_FOUND_EXCEPTION.getCode());
+        return errorDto;
+    }
+
+    @Override
+    public ErrorDto from(AnonRegistrationNotEnabledException exception) {
+        logException(exception);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setCode(ExceptionCode.ANON_REGISTRATION_NOT_ENABLED.getCode());
+        errorDto.setMessage(getMessageByCode(ExceptionCode.ANON_REGISTRATION_NOT_ENABLED));
+        return errorDto;
+    }
+
+    @Override
+    public ErrorDto from(RegistrationSystemException exception) {
+        logException(exception);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage(getMessageByCode(exception.getCode()));
+        errorDto.setCode(errorDto.getCode());
         return errorDto;
     }
 
