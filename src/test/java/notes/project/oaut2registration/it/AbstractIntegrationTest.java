@@ -12,10 +12,12 @@ import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import notes.project.oaut2registration.config.ApplicationProperties;
+import notes.project.oaut2registration.dto.integration.ServiceClientAdditionalInfoKafkaDto;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.utils.TestAsyncTaskExecutor;
 import org.apache.commons.dbcp.cpdsadapter.DriverAdapterCPDS;
 import org.apache.commons.dbcp.datasources.SharedPoolDataSource;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -26,6 +28,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +43,12 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
                 classes = AbstractIntegrationTest.IntegrationTestConfiguration.class)
 @AutoConfigureJsonTesters
 @ActiveProfiles("it")
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 public abstract class AbstractIntegrationTest {
+    protected static final String REGISTRATION_DATE_PLACEHOLDER = "<REGISTRATION_DATE_PLACEHOLDER>";
+    protected static final String CLIENT_EXTERNAL_ID_PLACEHOLDER = "<CLIENT_EXTERNAL_ID_PLACEHOLDER>";
+
+    protected String actualKafkaMessage;
 
     @Inject
     protected ApplicationProperties applicationProperties;
@@ -48,6 +57,10 @@ public abstract class AbstractIntegrationTest {
     @Inject
     protected WebApplicationContext context;
 
+    @KafkaListener(topics = "additional.info.topic", groupId = "registration.ms.group")
+    protected void readMessage(ConsumerRecord<?, byte[]> consumer) {
+        this.actualKafkaMessage = new String(consumer.value());
+    }
 
     @ActiveProfiles("it")
     @TestConfiguration

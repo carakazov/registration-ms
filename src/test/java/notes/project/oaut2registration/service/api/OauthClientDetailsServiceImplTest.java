@@ -1,4 +1,4 @@
-package notes.project.oaut2registration.service;
+package notes.project.oaut2registration.service.api;
 
 import java.util.Optional;
 

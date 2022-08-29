@@ -17,6 +17,7 @@ public interface ServiceClientRegistrationMapper {
 
     @Mapping(target = "username", source = "authInfo.username")
     @Mapping(target = "userRoles", source = "authInfo.serviceClientRoles")
-    @Mapping(target = "registrationDate", source = "registrationDate")
-    ServiceClientRegistrationResponseDto from(ServiceClientAuthInformationDto authInfo, LocalDateTime registrationDate);
+    @Mapping(target = "registrationDate", source = "serviceClient.registrationDate")
+    @Mapping(target = "clientExternalId", source = "serviceClient.externalId")
+    ServiceClientRegistrationResponseDto from(ServiceClientAuthInformationDto authInfo, ServiceClient serviceClient);
 }

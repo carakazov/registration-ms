@@ -1,9 +1,8 @@
-package notes.project.oaut2registration.service;
+package notes.project.oaut2registration.service.api;
 
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.model.SystemScope;
 import notes.project.oaut2registration.repository.SystemScopeRepository;
-import notes.project.oaut2registration.service.api.SystemScopeService;
 import notes.project.oaut2registration.service.api.impl.SystemScopeServiceImpl;
 import notes.project.oaut2registration.utils.DbUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ServiceScopeImplTest {
+class SystemScopeImplTest {
     @Mock
     private SystemScopeRepository repository;
 

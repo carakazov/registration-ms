@@ -85,10 +85,10 @@
 
         <createTable tableName="service_client_role">
             <column name="service_client_id" type="bigint" autoIncrement="true">
-                <constraints foreignKeyName="service_client_fk" references="service_clients(id)" unique="true" nullable="false"/>
+                <constraints foreignKeyName="service_client_fk" references="service_clients(id)" nullable="false"/>
             </column>
             <column name="role_id" type="bigint">
-                <constraints foreignKeyName="role_fk" references="roles(id)" unique="true" nullable="false"/>
+                <constraints foreignKeyName="role_fk" references="roles(id)" nullable="false"/>
             </column>
         </createTable>
         <addPrimaryKey tableName="service_client_role" columnNames="service_client_id, role_id"/>

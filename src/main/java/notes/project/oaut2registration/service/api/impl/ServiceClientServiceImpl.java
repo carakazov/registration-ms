@@ -39,7 +39,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     @Override
     @Transactional
     public ServiceClientRegistrationResponseDto registerServiceClient(ServiceClientRegistrationRequestDto request) {
-        Scope currentScope = Scope.valueOf(authHelper.getCurrentAuthority());
+        String currentScope = authHelper.getCurrentAuthority();
         OauthClientDetails details = oauthClientDetailsService.findByClientId(request.getAuthInformation().getClientId());
         serviceClientRegistrationValidator.validate(
             new ServiceClientRegistrationValidationDto(
@@ -66,6 +66,6 @@ public class ServiceClientServiceImpl implements ServiceClientService {
 
         serviceClientRegistrationProducer.produceMessage(request, serviceClient);
 
-        return serviceClientRegistrationMapper.from(request.getAuthInformation(), serviceClient.getRegistrationDate());
+        return serviceClientRegistrationMapper.from(request.getAuthInformation(), serviceClient);
     }
 }

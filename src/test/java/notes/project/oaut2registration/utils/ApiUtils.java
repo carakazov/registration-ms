@@ -2,21 +2,60 @@ package notes.project.oaut2registration.utils;
 
 import java.util.Collections;
 
+import javax.print.attribute.standard.MediaSize;
+
 import lombok.experimental.UtilityClass;
-import notes.project.oaut2registration.dto.api.CreateRoleRequestDto;
-import notes.project.oaut2registration.dto.api.ErrorDto;
-import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
-import notes.project.oaut2registration.dto.api.ValidationErrorDto;
+import notes.project.oaut2registration.dto.api.*;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.exception.ValidationException;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.utils.validation.dto.CreateRoleValidationDto;
+import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.SystemRegistrationValidationDto;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+    public static ServiceClientRegistrationResponseDto serviceClientRegistrationResponseDto() {
+        return new ServiceClientRegistrationResponseDto()
+            .setUsername(USERNAME)
+            .setRegistrationDate(REGISTRATION_DATE)
+            .setUserRoles(Collections.singletonList(ROLE_TITLE))
+            .setClientExternalId(SERVICE_CLIENT_EXTERNAL_ID);
+    }
+
+    public static ServiceClientRegistrationValidationDto serviceClientRegistrationValidationDto() {
+        return new ServiceClientRegistrationValidationDto()
+            .setCurrentScope(ANON_SCOPE)
+            .setAnonRegistrationEnabled(ANON_REGISTRATION_ENABLED)
+            .setUsernameAlreadyExists(USERNAME_ALREADY_EXISTS)
+            .setDateOfBirth(DATE_OF_BIRTH);
+    }
+
+    public static ServiceClientRegistrationRequestDto serviceClientRegistrationRequestDto() {
+        return new ServiceClientRegistrationRequestDto()
+            .setAuthInformation(serviceClientAuthInformationDto())
+            .setAdditionalInformation(serviceClientAdditionalInformationDto());
+    }
+
+    public static ServiceClientAuthInformationDto serviceClientAuthInformationDto() {
+        return new ServiceClientAuthInformationDto()
+            .setClientId(CLIENT_ID)
+            .setUsername(USERNAME)
+            .setPassword(PLAIN_PASSWORD)
+            .setServiceClientRoles(Collections.singletonList(ROLE_TITLE));
+    }
+
+    public static ServiceClientAdditionalInformationDto serviceClientAdditionalInformationDto() {
+        return new ServiceClientAdditionalInformationDto()
+            .setName(NAME)
+            .setSurname(SURNAME)
+            .setMiddleName(MIDDLE_NAME)
+            .setEmail(EMAIL)
+            .setDateOfBirth(DATE_OF_BIRTH)
+            .setAdditionalInfo(ADDITIONAL_INFO);
+    }
 
     public static CreateRoleRequestDto createRoleRequestDto() {
         return new CreateRoleRequestDto()

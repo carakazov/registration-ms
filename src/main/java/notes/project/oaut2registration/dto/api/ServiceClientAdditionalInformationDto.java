@@ -3,6 +3,8 @@ package notes.project.oaut2registration.dto.api;
 import java.time.LocalDate;
 import java.util.Map;
 
+import javax.validation.constraints.Email;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,6 +20,7 @@ public class ServiceClientAdditionalInformationDto {
     private String surname;
     @ApiModelProperty(value = "Отчество")
     private String middleName;
+    @Email
     @ApiModelProperty(value = "Электронная поста")
     private String email;
     @ApiModelProperty(value = "Дата рождения")

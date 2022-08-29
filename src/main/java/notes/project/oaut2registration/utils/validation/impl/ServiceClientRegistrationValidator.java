@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class ServiceClientRegistrationValidator implements Validator<ServiceClientRegistrationValidationDto> {
     @Override
     public void validate(ServiceClientRegistrationValidationDto target) {
-        if(Scope.ANON.equals(target.getCurrentScope()) && Boolean.FALSE.equals(target.getAnonRegistrationEnabled())) {
+        if(Scope.ANON.toString().equals(target.getCurrentScope()) && Boolean.FALSE.equals(target.getAnonRegistrationEnabled())) {
             throw new AnonRegistrationNotEnabledException("Anon registration not enabled");
         }
 

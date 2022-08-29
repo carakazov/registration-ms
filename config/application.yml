@@ -21,6 +21,7 @@ spring:
       bindings:
         registered-clients-topic:
           destination: additional.info.topic
+          group: registration.ms.group
 
 
 

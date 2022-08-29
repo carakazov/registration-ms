@@ -2,6 +2,7 @@ package notes.project.oaut2registration.dto.api;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,6 +17,8 @@ public class ServiceClientRegistrationResponseDto {
     private String username;
     @ApiModelProperty(value = "Дата регистрации")
     private LocalDateTime registrationDate;
+    @ApiModelProperty(value = "Внешний ID созданного клиента")
+    private UUID clientExternalId;
     @ApiModelProperty(value = "Роли пользователя")
     private List<String> userRoles;
 }
