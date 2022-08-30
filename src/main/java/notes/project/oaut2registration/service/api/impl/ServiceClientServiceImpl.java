@@ -18,6 +18,7 @@ import notes.project.oaut2registration.service.integration.ServiceClientRegistra
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.mapper.ServiceClientRegistrationMapper;
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientRegistrationMappingDto;
+import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +35,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     private final ServiceClientRegistrationProducer serviceClientRegistrationProducer;
     private final AuthHelper authHelper;
     private final PasswordEncoder passwordEncoder;
+    private final UuidHelper uuidHelper;
 
 
     @Override
@@ -53,6 +55,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
             new ServiceClientRegistrationMappingDto(
                 request.getAuthInformation().getUsername(),
                 passwordEncoder.encode(request.getAuthInformation().getPassword()),
+                uuidHelper.generateUuid(),
                 details,
                 request.getAuthInformation().getServiceClientRoles().stream()
                     .map(item -> roleService.findByClientIdAndRoleTitle(

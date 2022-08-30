@@ -1,6 +1,7 @@
 package notes.project.oaut2registration.utils.mapper.dto;
 
 import java.util.List;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ import notes.project.oaut2registration.model.Role;
 public class ServiceClientRegistrationMappingDto {
     private String username;
     private String password;
+    private UUID externalId;
     private OauthClientDetails oauthClient;
     private List<Role> roles;
 }

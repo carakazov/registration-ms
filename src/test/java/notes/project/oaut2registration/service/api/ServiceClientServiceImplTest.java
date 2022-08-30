@@ -12,6 +12,7 @@ import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.mapper.ServiceClientRegistrationMapper;
+import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +45,8 @@ class ServiceClientServiceImplTest {
     private AuthHelper authHelper;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private UuidHelper uuidHelper;
 
     private ServiceClientService service;
 
@@ -57,7 +60,8 @@ class ServiceClientServiceImplTest {
             Mappers.getMapper(ServiceClientRegistrationMapper.class),
             serviceClientRegistrationProducer,
             authHelper,
-            passwordEncoder
+            passwordEncoder,
+            uuidHelper
         );
     }
 
@@ -76,6 +80,7 @@ class ServiceClientServiceImplTest {
         when(passwordEncoder.encode(any())).thenReturn(ENCODED_PASSWORD);
         when(roleService.findByClientIdAndRoleTitle(any(), any())).thenReturn(role);
         when(repository.save(any())).thenReturn(serviceClient.setRegistrationDate(REGISTRATION_DATE));
+        when(uuidHelper.generateUuid()).thenReturn(SERVICE_CLIENT_EXTERNAL_ID);
 
         ServiceClientRegistrationResponseDto actual = service.registerServiceClient(request);
 
@@ -92,5 +97,6 @@ class ServiceClientServiceImplTest {
             request.getAuthInformation().getClientId(),
             request.getAuthInformation().getServiceClientRoles().get(0)
         );
+        verify(repository).save(serviceClient.setId(null).setRegistrationDate(null));
     }
 }
