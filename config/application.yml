@@ -11,6 +11,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost
+          defaultBrokerPort: 9092
+          replication-factor: 1
+      bindings:
+        registered-clients-topic:
+          destination: additional.info.topic
+          group: registration.ms.group
+
+
 
 application:
   errorMessages:
@@ -23,6 +36,10 @@ application:
     requestedResourceNotFound: Requested resource not found.
     roleAlreadyExists: Such role already exists in your service. Try another one.
     reservedRoleTitle: Role titles OAUTH_CLIENT and OAUTH_ADMIN are reserved. You can not use them.
+    additionalInfoSendingException: Excpetion while additional info sending.
+    anonRegistrationNotEnabled: Anon registration for this system not enabled.
+    usernameAlreadyExists: Username already exists.
+    dateOfBirthInFuture: Date of birth in future.
   systemRegistrationKeyWords:
     - my-super-secret
     - another-my-secret

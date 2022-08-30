@@ -32,4 +32,6 @@ public class OauthClientDetails {
     private String additionalInformation;
 
     private Boolean autoapprove;
+
+    private Boolean anonRegistrationEnabled;
 }

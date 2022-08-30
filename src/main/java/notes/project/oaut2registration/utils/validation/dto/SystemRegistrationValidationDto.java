@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
 
 @Data
 @AllArgsConstructor

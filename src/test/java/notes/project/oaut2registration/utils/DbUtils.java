@@ -3,16 +3,24 @@ package notes.project.oaut2registration.utils;
 import java.util.Collections;
 
 import lombok.experimental.UtilityClass;
-import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
-import notes.project.oaut2registration.model.OauthClientDetails;
-import notes.project.oaut2registration.model.Role;
-import notes.project.oaut2registration.model.Scope;
-import notes.project.oaut2registration.model.SystemScope;
+import notes.project.oaut2registration.model.*;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class DbUtils {
+    public static ServiceClient serviceClient() {
+        return new ServiceClient()
+            .setId(ID)
+            .setExternalId(SERVICE_CLIENT_EXTERNAL_ID)
+            .setUsername(USERNAME)
+            .setPassword(ENCODED_PASSWORD)
+            .setRegistrationDate(REGISTRATION_DATE)
+            .setOauthClient(oauthClientDetails())
+            .setBlocked(Boolean.FALSE)
+            .setRoles(Collections.singletonList(role()));
+    }
+
     public static OauthClientDetails oauthClientDetails() {
         return new OauthClientDetails()
             .setClientId(CLIENT_ID)
@@ -21,7 +29,8 @@ public class DbUtils {
             .setAuthorities(OAUTH_CLIENT_AUTHORITY)
             .setAuthorizedGrantTypes(AUTHORIZED_GRANT_TYPES)
             .setAccessTokenValidity(ACCESS_TOKEN_VALIDITY)
-            .setRefreshTokenValidity(REFRESH_TOKEN_VALIDITY);
+            .setRefreshTokenValidity(REFRESH_TOKEN_VALIDITY)
+            .setAnonRegistrationEnabled(Boolean.TRUE);
     }
 
     public static SystemScope systemScope() {

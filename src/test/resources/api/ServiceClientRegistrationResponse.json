@@ -1,0 +1,8 @@
+{
+  "username": "my-username",
+  "registrationDate": "<REGISTRATION_DATE_PLACEHOLDER>",
+  "clientExternalId": "<CLIENT_EXTERNAL_ID_PLACEHOLDER>",
+  "userRoles": [
+    "TEST_ROLE"
+  ]
+}

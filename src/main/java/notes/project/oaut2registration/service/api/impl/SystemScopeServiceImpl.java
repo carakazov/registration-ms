@@ -1,11 +1,10 @@
-package notes.project.oaut2registration.service.impl;
+package notes.project.oaut2registration.service.api.impl;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.model.SystemScope;
 import notes.project.oaut2registration.repository.SystemScopeRepository;
-import notes.project.oaut2registration.service.SystemScopeService;
+import notes.project.oaut2registration.service.api.SystemScopeService;
 import org.springframework.stereotype.Service;
 
 @Service

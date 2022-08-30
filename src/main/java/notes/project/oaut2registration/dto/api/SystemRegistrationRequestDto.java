@@ -1,4 +1,4 @@
-package notes.project.oaut2registration.dto;
+package notes.project.oaut2registration.dto.api;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -30,4 +30,7 @@ public class SystemRegistrationRequestDto {
     @NotNull
     @ApiModelProperty(value = "Время жизни токен обновления")
     private Integer refreshTokenValidity;
+    @NotNull
+    @ApiModelProperty(value = "Признак разрешения анонимной регистрации")
+    private Boolean anonRegistrationEnabled;
 }

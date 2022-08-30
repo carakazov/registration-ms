@@ -1,17 +1,19 @@
-package notes.project.oaut2registration.service.impl;
+package notes.project.oaut2registration.service.api.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.CreateRoleRequestDto;
+import notes.project.oaut2registration.dto.api.CreateRoleRequestDto;
+import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
+import notes.project.oaut2registration.model.Role;
 import notes.project.oaut2registration.model.SystemScope;
 import notes.project.oaut2registration.repository.RoleRepository;
-import notes.project.oaut2registration.service.OauthClientDetailsService;
-import notes.project.oaut2registration.service.RoleService;
-import notes.project.oaut2registration.service.SystemScopeService;
+import notes.project.oaut2registration.service.api.OauthClientDetailsService;
+import notes.project.oaut2registration.service.api.RoleService;
+import notes.project.oaut2registration.service.api.SystemScopeService;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.mapper.CreateRoleMapper;
 import notes.project.oaut2registration.utils.mapper.dto.CreateRoleMappingDto;
@@ -42,5 +44,11 @@ public class RoleServiceImpl implements RoleService {
             .map(systemScopeService::findBySystemScope)
             .collect(Collectors.toList());
         repository.save(createRoleMapper.to(new CreateRoleMappingDto(request.getRoleTitle(), scopes, details)));
+    }
+
+    @Override
+    public Role findByClientIdAndRoleTitle(String clientId, String roleTitle) {
+        return repository.findByDetailsClientIdAndRoleTitle(clientId, roleTitle)
+            .orElseThrow(() -> new NotFoundException("Role with title " + roleTitle + " not found in system " + clientId));
     }
 }
