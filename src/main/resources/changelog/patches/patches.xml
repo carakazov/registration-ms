@@ -16,4 +16,6 @@
    <include file="changelog/patches/role-creation/insert-scope.xml"/>
    <!--new-user-registration-->
    <include file="changelog/patches/new-user-registration/new-user-registration.xml"/>
+   <!--changing-roles-->
+   <include file="changelog/patches/changing-roles/changing-roles.xml"/>
 </databaseChangeLog>
