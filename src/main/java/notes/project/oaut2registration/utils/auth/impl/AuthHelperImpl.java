@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
+import notes.project.oaut2registration.config.oauth.dto.JwtDto;
 import notes.project.oaut2registration.exception.SecurityContextException;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,15 @@ public class AuthHelperImpl implements AuthHelper {
             throw new SecurityContextException("No principal found in context");
         }
         return clientId.toString();
+    }
+
+    @Override
+    public String getCurrentUserName() {
+        JwtDto jwt = (JwtDto) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        if(Objects.isNull(jwt.getUserName())) {
+            throw new SecurityContextException("No username found in context");
+        }
+        return jwt.getUserName();
     }
 
     @Override

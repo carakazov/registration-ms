@@ -40,6 +40,10 @@ application:
     anonRegistrationNotEnabled: Anon registration for this system not enabled.
     usernameAlreadyExists: Username already exists.
     dateOfBirthInFuture: Date of birth in future.
+    serviceClientNotFound: Service client not found.
+    sameRoleInBothLists: Same role can not be in both lists.
+    userNotHaveRole: User does not have role from list.
+    userAlreadyHasRole: User already has one of theese roles.
   systemRegistrationKeyWords:
     - my-super-secret
     - another-my-secret

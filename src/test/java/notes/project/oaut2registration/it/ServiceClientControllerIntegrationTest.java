@@ -1,12 +1,17 @@
 package notes.project.oaut2registration.it;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import javax.inject.Inject;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import notes.project.oaut2registration.controller.ServiceClientController;
-import notes.project.oaut2registration.model.Scope;
-import notes.project.oaut2registration.model.ServiceClient;
+import notes.project.oaut2registration.model.*;
+import notes.project.oaut2registration.repository.OauthAccessTokenRepository;
+import notes.project.oaut2registration.service.api.OauthAccessTokenService;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -25,6 +31,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static notes.project.oaut2registration.utils.TestDataConstants.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @Tag("it")
 @ExtendWith(SpringExtension.class)
@@ -37,6 +46,9 @@ public class ServiceClientControllerIntegrationTest extends AbstractIntegrationT
 
     @Inject
     private ServiceClientController controller;
+
+    @MockBean
+    private OauthAccessTokenRepository oauthAccessTokenRepository;
 
     @BeforeEach
     void setUp() {
@@ -58,10 +70,11 @@ public class ServiceClientControllerIntegrationTest extends AbstractIntegrationT
             .content(TestUtils.getClasspathResource("api/ServiceClientRegistrationRequest.json")))
             .andReturn().getResponse().getContentAsString();
 
-        ServiceClient serviceClient = testEntityManager.getEntityManager().createQuery(
-            "select service_client from service_clients service_client where service_client.id = 1",
-            ServiceClient.class
-        ).getSingleResult();
+        ServiceClient serviceClient = getServiceClient();
+
+        this.expectedKafkaMessage = TestUtils.getClasspathResource("integration/ServiceClientAdditionalInfoKafka.json")
+            .replace(REGISTRATION_DATE_PLACEHOLDER, serviceClient.getRegistrationDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+            .replace(CLIENT_EXTERNAL_ID_PLACEHOLDER, serviceClient.getExternalId().toString());
 
         assertNotNull(serviceClient);
 
@@ -70,11 +83,41 @@ public class ServiceClientControllerIntegrationTest extends AbstractIntegrationT
             .replace(CLIENT_EXTERNAL_ID_PLACEHOLDER, serviceClient.getExternalId().toString());
 
         JSONAssert.assertEquals(expected, actual, false);
+    }
 
-        String expectedKafkaMessage = TestUtils.getClasspathResource("integration/ServiceClientAdditionalInfoKafka.json")
-            .replace(REGISTRATION_DATE_PLACEHOLDER, serviceClient.getRegistrationDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+    @Test
+    void changeServiceClientRoles() throws Exception {
+        setSecurityContext(Scope.CHANGE_ROLES);
+        Role role = DbUtils.role().setRoleTitle(ROLE_TO_REMOVE);
+        testEntityManager.merge(DbUtils.systemScope(Scope.CHANGE_ROLES));
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(role);
+        testEntityManager.merge(DbUtils.role().setId(ID_2).setRoleTitle(ROLE_TO_ADD));
+        List<Role> roles = new ArrayList<>();
+        roles.add(DbUtils.role().setRoleTitle(ROLE_TO_REMOVE));
+        testEntityManager.merge(DbUtils.serviceClient().setRoles(roles));
+
+        ServiceClient serviceClient = getServiceClient();
+
+        String actual = mockMvc.perform(MockMvcRequestBuilders.put("/client/98fcee4c-452a-4d58-9960-ddd6e0eb47dc/changeRoles")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtils.getClasspathResource("api/ChangeServiceClientRolesRequest.json")))
+            .andReturn().getResponse().getContentAsString();
+
+        String expected = TestUtils.getClasspathResource("api/ChangeServiceClientRolesResponse.json")
             .replace(CLIENT_EXTERNAL_ID_PLACEHOLDER, serviceClient.getExternalId().toString());
 
-        JSONAssert.assertEquals(expectedKafkaMessage, actualKafkaMessage, false);
+        ServiceClientHistory serviceClientHistory = testEntityManager.getEntityManager().createQuery(
+            "select history from service_client_history history where history.id = 1",
+            ServiceClientHistory.class
+        ).getSingleResult();
+
+        assertNotNull(serviceClientHistory);
+
+        JSONAssert.assertEquals(
+            expected,
+            actual,
+            false
+        );
     }
 }

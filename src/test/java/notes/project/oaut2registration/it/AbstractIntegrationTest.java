@@ -12,17 +12,25 @@ import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import notes.project.oaut2registration.config.ApplicationProperties;
+import notes.project.oaut2registration.config.oauth.dto.JwtDto;
 import notes.project.oaut2registration.dto.integration.ServiceClientAdditionalInfoKafkaDto;
 import notes.project.oaut2registration.model.Scope;
+import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.utils.TestAsyncTaskExecutor;
 import org.apache.commons.dbcp.cpdsadapter.DriverAdapterCPDS;
 import org.apache.commons.dbcp.datasources.SharedPoolDataSource;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.json.JSONException;
+import org.junit.jupiter.api.AfterEach;
 import org.postgresql.ds.PGSimpleDataSource;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
@@ -33,8 +41,10 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
@@ -47,8 +57,7 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 public abstract class AbstractIntegrationTest {
     protected static final String REGISTRATION_DATE_PLACEHOLDER = "<REGISTRATION_DATE_PLACEHOLDER>";
     protected static final String CLIENT_EXTERNAL_ID_PLACEHOLDER = "<CLIENT_EXTERNAL_ID_PLACEHOLDER>";
-
-    protected String actualKafkaMessage;
+    protected String expectedKafkaMessage;
 
     @Inject
     protected ApplicationProperties applicationProperties;
@@ -56,11 +65,8 @@ public abstract class AbstractIntegrationTest {
     protected ObjectMapper objectMapper;
     @Inject
     protected WebApplicationContext context;
-
-    @KafkaListener(topics = "additional.info.topic", groupId = "registration.ms.group")
-    protected void readMessage(ConsumerRecord<?, byte[]> consumer) {
-        this.actualKafkaMessage = new String(consumer.value());
-    }
+    @Inject
+    protected ApplicationContext applicationContext;
 
     @ActiveProfiles("it")
     @TestConfiguration
@@ -70,7 +76,9 @@ public abstract class AbstractIntegrationTest {
             return new TestAsyncTaskExecutor(entityManager);
         }
 
-        @Bean
+
+        /*
+        @Bean("dataSource")
         @Profile("it")
         public DataSource dataSource() {
             DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -78,9 +86,11 @@ public abstract class AbstractIntegrationTest {
             dataSource.setUrl("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
             dataSource.setUsername("sa");
             dataSource.setPassword("");
-
             return dataSource;
         }
+
+         */
+
     }
 
     @Inject
@@ -97,9 +107,15 @@ public abstract class AbstractIntegrationTest {
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(
                 CLIENT_ID,
-                null,
+                new JwtDto().setUserName(USERNAME),
                 Collections.singletonList(new SimpleGrantedAuthority(scope.toString()))
             )
         );
+    }
+
+    protected ServiceClient getServiceClient() {
+       return testEntityManager.getEntityManager().createQuery(
+            "select service_client from service_clients service_client where service_client.id = 1",
+            ServiceClient.class).getSingleResult();
     }
 }

@@ -9,6 +9,7 @@ import notes.project.oaut2registration.dto.api.*;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.exception.ValidationException;
 import notes.project.oaut2registration.model.Scope;
+import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.CreateRoleValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.SystemRegistrationValidationDto;
@@ -17,6 +18,25 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+
+    public static ChangeServiceClientRolesResponseDto changeServiceClientRolesResponseDto() {
+        return new ChangeServiceClientRolesResponseDto()
+            .setUserExternalId(SERVICE_CLIENT_EXTERNAL_ID)
+            .setNewRoleTitles(Collections.singletonList(ROLE_TO_ADD));
+    }
+
+    public static ChangeSystemClientRoleValidationDto changeSystemClientRoleValidationDto() {
+        return new ChangeSystemClientRoleValidationDto()
+            .setServiceClientRoles(Collections.singletonList(ROLE_TO_REMOVE))
+            .setRequest(changeServiceClientRolesRequestDto());
+    }
+
+    public static ChangeServiceClientRolesRequestDto changeServiceClientRolesRequestDto() {
+        return new ChangeServiceClientRolesRequestDto()
+            .setRolesToAdd(Collections.singletonList(ROLE_TO_ADD))
+            .setRolesToRemove(Collections.singletonList(ROLE_TO_REMOVE));
+    }
+
     public static ServiceClientRegistrationResponseDto serviceClientRegistrationResponseDto() {
         return new ServiceClientRegistrationResponseDto()
             .setUsername(USERNAME)

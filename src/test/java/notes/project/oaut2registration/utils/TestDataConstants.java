@@ -55,4 +55,8 @@ public class TestDataConstants {
     public static final UUID SERVICE_CLIENT_EXTERNAL_ID = UUID.fromString(SERVICE_CLIENT_EXTERNAL_ID_STRING);
     public static final LocalDateTime REGISTRATION_DATE = LocalDateTime.of(2022, 8, 29, 10, 10, 10);
     public static final String CLIENT_ADDITIONAL_INFO_BINDING = "registered-clients-topic";
+
+    public static final String ROLE_TO_REMOVE = "ROLE_TO_REMOVE";
+    public static final String ROLE_TO_ADD = "ROLE_TO_ADD";
+    public static final LocalDateTime EVENT_DATE = LocalDateTime.of(2022, 8, 10, 10, 10, 10);
 }

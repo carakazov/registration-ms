@@ -1,0 +1,8 @@
+{
+  "rolesToAdd": [
+    "ROLE_TO_ADD"
+  ],
+  "rolesToRemove": [
+    "ROLE_TO_REMOVE"
+  ]
+}

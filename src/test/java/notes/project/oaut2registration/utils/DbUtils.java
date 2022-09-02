@@ -9,6 +9,20 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class DbUtils {
+
+    public static ServiceClientHistory serviceClientHistory() {
+        return new ServiceClientHistory()
+            .setId(ID)
+            .setClient(serviceClient())
+            .setEventDate(EVENT_DATE)
+            .setEvent(HistoryEvent.BLOCK)
+            .setOperator(operator());
+    }
+
+    public static ServiceClient operator() {
+        return serviceClient().setId(ID_2);
+    }
+
     public static ServiceClient serviceClient() {
         return new ServiceClient()
             .setId(ID)
@@ -37,6 +51,12 @@ public class DbUtils {
         return new SystemScope()
             .setId(ID)
             .setSystemScope(Scope.ANON);
+    }
+
+    public static SystemScope systemScope(Scope scope) {
+        return new SystemScope()
+            .setId(ID)
+            .setSystemScope(scope);
     }
 
     public static Role role() {
