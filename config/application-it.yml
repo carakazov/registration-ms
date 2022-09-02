@@ -9,3 +9,9 @@ application:
   errorMessages:
     internalError: internal error
     wrongRequestParameters: wrong request parameters
+
+customDataSource:
+  serverName: localhost
+  databaseName: registration_service
+  user: registration_service_user
+  password: 1q2w3e

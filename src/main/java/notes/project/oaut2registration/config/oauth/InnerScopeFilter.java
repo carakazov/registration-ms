@@ -44,7 +44,7 @@ public class InnerScopeFilter extends OncePerRequestFilter {
             List<String> scopes = innerScopeFilterService.extractScopes(jwtDto);
             authentication = new UsernamePasswordAuthenticationToken(
                 jwtDto.getClientId(),
-                null,
+                jwtDto,
                 scopes.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
             );
         } else {

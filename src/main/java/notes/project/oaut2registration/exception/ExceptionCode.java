@@ -15,7 +15,11 @@ public enum ExceptionCode {
     ADDITIONAL_INFO_SENDING_EXCEPTION("additionalInfoSendingException"),
     ANON_REGISTRATION_NOT_ENABLED("anonRegistrationNotEnabled"),
     USERNAME_ALREADY_EXISTS("usernameAlreadyExists"),
-    DATE_OF_BIRTH_IN_FUTURE("dateOfBirthInFuture");
+    DATE_OF_BIRTH_IN_FUTURE("dateOfBirthInFuture"),
+    SERVICE_CLIENT_NOT_FOUND("serviceClientNotFound"),
+    SAME_ROLE_IN_BOTH_LISTS("sameRoleInBothLists"),
+    USER_NOT_HAVE_ROLE("userNotHaveRole"),
+    USER_ALREADY_HAS_ROLE("userAlreadyHasRole");
     @Getter
     private final String code;
 
