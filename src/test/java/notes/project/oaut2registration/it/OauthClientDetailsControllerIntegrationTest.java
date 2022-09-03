@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Import(AbstractIntegrationTest.IntegrationTestConfiguration.class)
-public class OauthClientDetailsControllerIntegrationTest extends AbstractIntegrationTest {
+class OauthClientDetailsControllerIntegrationTest extends AbstractIntegrationTest {
     private MockMvc mockMvc;
 
     @Inject

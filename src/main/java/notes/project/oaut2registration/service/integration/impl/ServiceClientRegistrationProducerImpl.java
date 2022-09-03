@@ -2,9 +2,9 @@ package notes.project.oaut2registration.service.integration.impl;
 
 import javax.transaction.Transactional;
 
+import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
 import lombok.RequiredArgsConstructor;
 import notes.project.oaut2registration.dto.api.ServiceClientRegistrationRequestDto;
-import notes.project.oaut2registration.dto.integration.ServiceClientAdditionalInfoKafkaDto;
 import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationProducer;
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationPublisher;
@@ -24,8 +24,7 @@ public class ServiceClientRegistrationProducerImpl implements ServiceClientRegis
         ServiceClientAdditionalInfoKafkaDto message = sendAdditionalInfoMapper.to(
             new SendAdditionalInfoMappingDto(
                 request.getAdditionalInformation(),
-                client.getExternalId(),
-                client.getRegistrationDate()
+                client
             )
         );
         publisher.publishMessage(message);

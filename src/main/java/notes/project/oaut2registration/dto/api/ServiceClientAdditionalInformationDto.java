@@ -1,6 +1,7 @@
 package notes.project.oaut2registration.dto.api;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.Email;
@@ -26,5 +27,5 @@ public class ServiceClientAdditionalInformationDto {
     @ApiModelProperty(value = "Дата рождения")
     private LocalDate dateOfBirth;
     @ApiModelProperty(value = "Любая другая информация по пользователю в формате key -> value")
-    private Map<String, Object> additionalInfo;
+    private List<ServiceClientAdditionalInfoRecordDto> additionalInfo;
 }

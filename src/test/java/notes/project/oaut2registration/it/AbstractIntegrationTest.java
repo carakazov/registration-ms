@@ -13,7 +13,6 @@ import javax.sql.DataSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import notes.project.oaut2registration.config.ApplicationProperties;
 import notes.project.oaut2registration.config.oauth.dto.JwtDto;
-import notes.project.oaut2registration.dto.integration.ServiceClientAdditionalInfoKafkaDto;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.utils.TestAsyncTaskExecutor;

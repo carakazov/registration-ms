@@ -13,9 +13,11 @@
     "middleName": "Valerievich",
     "email": "carakazov@yandex.ru",
     "dateOfBirth": "2000-08-21",
-    "additionalInfo": {
-      "someMyInfo": "someMyValue",
-      "andAnother": "another"
-    }
+    "additionalInfo": [
+      {
+        "field": "someMyValue",
+        "value": "another"
+      }
+    ]
   }
 }

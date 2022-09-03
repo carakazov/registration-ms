@@ -6,7 +6,7 @@
 
     <changeSet id="008" author="vadim.lebediantsev">
         <insert tableName="system_scopes">
-            <column name="system_scope" value="CHANGE_PASSWORD"/>
+            <column name="system_scope" value="CHANGE_ROLES"/>
         </insert>
     </changeSet>
 

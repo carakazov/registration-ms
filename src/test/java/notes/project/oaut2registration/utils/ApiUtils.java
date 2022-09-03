@@ -74,7 +74,13 @@ public class ApiUtils {
             .setMiddleName(MIDDLE_NAME)
             .setEmail(EMAIL)
             .setDateOfBirth(DATE_OF_BIRTH)
-            .setAdditionalInfo(ADDITIONAL_INFO);
+            .setAdditionalInfo(Collections.singletonList(serviceClientAdditionalInfoRecordDto()));
+    }
+
+    public static ServiceClientAdditionalInfoRecordDto serviceClientAdditionalInfoRecordDto() {
+        return new ServiceClientAdditionalInfoRecordDto()
+            .setField(ADDITIONAL_FIELD_NAME)
+            .setValue(ADDITIONAL_VALUE);
     }
 
     public static CreateRoleRequestDto createRoleRequestDto() {
