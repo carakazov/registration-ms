@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import notes.project.oaut2registration.dto.api.ServiceClientAdditionalInformationDto;
+import notes.project.oaut2registration.model.ServiceClient;
 
 @Data
 @Accessors(chain = true)
@@ -15,6 +16,5 @@ import notes.project.oaut2registration.dto.api.ServiceClientAdditionalInformatio
 @AllArgsConstructor
 public class SendAdditionalInfoMappingDto {
     private ServiceClientAdditionalInformationDto additionalInfo;
-    private UUID externalId;
-    private LocalDateTime registrationDate;
+    private ServiceClient serviceClient;
 }

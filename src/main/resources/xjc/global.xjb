@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings version="2.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               jaxb:extensionBindingPrefixes="xjc">
+
+    <jaxb:globalBindings>
+        <xjc:simple />
+        <xjc:serializable uid="-1" />
+        <jaxb:javaType name="java.time.LocalDateTime" xmlType="xs:dateTime"
+                       parseMethod="java.time.LocalDateTime.parse"/>
+        <jaxb:javaType name="java.time.LocalDate" xmlType="xs:date"
+                       parseMethod="java.time.LocalDate.parse"/>
+    </jaxb:globalBindings>
+    <jaxb:bindings schemaLocation="./xsd/ServiceRegistrationKafkaResponse.xsd">
+        <jaxb:bindings node="//xs:element[@name='additionalInfo']">
+            <jaxb:property name="additionalInfo"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:element[@name='externalId']">
+            <jaxb:javaType name="java.util.UUID" parseMethod="java.util.UUID.fromString"/>
+        </jaxb:bindings>
+    </jaxb:bindings>
+</jaxb:bindings>

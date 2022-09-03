@@ -1,39 +1,37 @@
 package notes.project.oaut2registration.it;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import javax.inject.Inject;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import notes.project.oaut2registration.controller.ServiceClientController;
 import notes.project.oaut2registration.model.*;
-import notes.project.oaut2registration.repository.OauthAccessTokenRepository;
-import notes.project.oaut2registration.service.api.OauthAccessTokenService;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.TestUtils;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @Tag("it")
 @ExtendWith(SpringExtension.class)
@@ -41,20 +39,26 @@ import static org.mockito.Mockito.when;
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Import(AbstractIntegrationTest.IntegrationTestConfiguration.class)
-public class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
+class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
     private MockMvc mockMvc;
 
     @Inject
     private ServiceClientController controller;
-
-    @MockBean
-    private OauthAccessTokenRepository oauthAccessTokenRepository;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
             .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
             .build();
+    }
+
+    @KafkaListener(topics = "additional.info.topic", groupId = "registration.ms.group")
+    void listen(ConsumerRecord<?, byte[]> consumerRecord) throws IOException {
+        String actualKafkaMessage = new String(consumerRecord.value());
+        String expectedKafkaMessage = TestUtils.getClasspathResource(
+            "integration/ServiceClientAdditionalInfoKafka.xml"
+        );
+        assertEquals(expectedKafkaMessage, actualKafkaMessage);
     }
 
     @Test
@@ -72,7 +76,7 @@ public class ServiceClientControllerIntegrationTest extends AbstractIntegrationT
 
         ServiceClient serviceClient = getServiceClient();
 
-        this.expectedKafkaMessage = TestUtils.getClasspathResource("integration/ServiceClientAdditionalInfoKafka.json")
+        this.expectedKafkaMessage = TestUtils.getClasspathResource("integration/ServiceClientAdditionalInfoKafka.xml")
             .replace(REGISTRATION_DATE_PLACEHOLDER, serviceClient.getRegistrationDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
             .replace(CLIENT_EXTERNAL_ID_PLACEHOLDER, serviceClient.getExternalId().toString());
 

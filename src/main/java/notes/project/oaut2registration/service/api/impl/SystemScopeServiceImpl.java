@@ -1,5 +1,7 @@
 package notes.project.oaut2registration.service.api.impl;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.model.SystemScope;

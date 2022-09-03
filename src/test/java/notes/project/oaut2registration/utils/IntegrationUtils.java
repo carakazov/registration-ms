@@ -1,21 +1,33 @@
 package notes.project.oaut2registration.utils;
 
+import java.util.Collections;
+
+import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
+import dto.integration.kafka.ServiceClientAdditionalInfoRecordKafkaDto;
 import lombok.experimental.UtilityClass;
-import notes.project.oaut2registration.dto.integration.ServiceClientAdditionalInfoKafkaDto;
+
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class IntegrationUtils {
     public static ServiceClientAdditionalInfoKafkaDto serviceClientAdditionalInfoKafkaDto() {
-        return new ServiceClientAdditionalInfoKafkaDto()
-            .setName(NAME)
-            .setSurname(SURNAME)
-            .setMiddleName(MIDDLE_NAME)
-            .setEmail(EMAIL)
-            .setDateOfBirth(DATE_OF_BIRTH)
-            .setAdditionalInfo(ADDITIONAL_INFO)
-            .setExternalId(SERVICE_CLIENT_EXTERNAL_ID)
-            .setRegistrationDate(REGISTRATION_DATE);
+        ServiceClientAdditionalInfoKafkaDto dto = new ServiceClientAdditionalInfoKafkaDto();
+        dto.setName(NAME);
+        dto.setSurname(SURNAME);
+        dto.setMiddleName(MIDDLE_NAME);
+        dto.setEmail(EMAIL);
+        dto.setDateOfBirth(DATE_OF_BIRTH);
+        dto.getAdditionalInfo().add(serviceClientAdditionalInfoRecordKafkaDto());
+        dto.setExternalId(SERVICE_CLIENT_EXTERNAL_ID);
+        dto.setRegistrationDate(REGISTRATION_DATE);
+        return dto;
+    }
+
+    public static ServiceClientAdditionalInfoRecordKafkaDto serviceClientAdditionalInfoRecordKafkaDto() {
+        ServiceClientAdditionalInfoRecordKafkaDto dto = new ServiceClientAdditionalInfoRecordKafkaDto();
+        dto.setField(ADDITIONAL_FIELD_NAME);
+        dto.setValue(ADDITIONAL_VALUE);
+        return dto;
     }
 }

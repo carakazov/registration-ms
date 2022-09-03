@@ -1,6 +1,6 @@
 package notes.project.oaut2registration.service.integration;
 
-import notes.project.oaut2registration.dto.integration.ServiceClientAdditionalInfoKafkaDto;
+import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
 
 public interface ServiceClientRegistrationPublisher {
     void publishMessage(ServiceClientAdditionalInfoKafkaDto message);

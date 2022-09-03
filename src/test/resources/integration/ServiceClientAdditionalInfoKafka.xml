@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<serviceClientAdditionalInfoKafkaDto>
+    <systemName>client id</systemName>
+    <name>Vadim</name>
+    <surname>Lebediantsev</surname>
+    <middleName>Valerievich</middleName>
+    <email>carakazov@yandex.ru</email>
+    <dateOfBirth>2000-08-21</dateOfBirth>
+    <additionalInfo>
+        <field>someMyValue</field>
+        <value xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">another</value>
+    </additionalInfo>
+    <externalId>446f6bc9-b554-4956-9b3a-57518b8e11b9</externalId>
+    <registrationDate>2022-09-04T01:44:44.844733</registrationDate>
+</serviceClientAdditionalInfoKafkaDto>

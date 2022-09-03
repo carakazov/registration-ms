@@ -1,7 +1,6 @@
 package notes.project.oaut2registration.utils.mapper;
 
-import liquibase.pro.packaged.M;
-import notes.project.oaut2registration.dto.integration.ServiceClientAdditionalInfoKafkaDto;
+import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
 import notes.project.oaut2registration.utils.mapper.dto.SendAdditionalInfoMappingDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,7 +15,8 @@ public interface SendAdditionalInfoMapper {
     @Mapping(target = "email", source = "additionalInfo.email")
     @Mapping(target = "dateOfBirth", source = "additionalInfo.dateOfBirth")
     @Mapping(target = "additionalInfo", source = "additionalInfo.additionalInfo")
-    @Mapping(target = "externalId", source = "externalId")
-    @Mapping(target = "registrationDate", source = "registrationDate")
+    @Mapping(target = "externalId", source = "serviceClient.externalId")
+    @Mapping(target = "registrationDate", source = "serviceClient.registrationDate")
+    @Mapping(target = "systemName", source = "serviceClient.oauthClient.clientId")
     ServiceClientAdditionalInfoKafkaDto to(SendAdditionalInfoMappingDto source);
 }

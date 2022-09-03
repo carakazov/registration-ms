@@ -50,6 +50,8 @@ public class TestDataConstants {
     public static final String MIDDLE_NAME = "middle name";
     public static final String EMAIL = "test@box.com";
     public static final LocalDate DATE_OF_BIRTH = LocalDate.of(2000, 1, 1);
+    public static final String ADDITIONAL_FIELD_NAME = "additional field name";
+    public static final String ADDITIONAL_VALUE = "additional value";
     public static final Map<String, Object> ADDITIONAL_INFO = Map.ofEntries(entry("custom-key", "custom-value"));
     public static final String SERVICE_CLIENT_EXTERNAL_ID_STRING = "98fcee4c-452a-4d58-9960-ddd6e0eb47dc";
     public static final UUID SERVICE_CLIENT_EXTERNAL_ID = UUID.fromString(SERVICE_CLIENT_EXTERNAL_ID_STRING);
