@@ -2,6 +2,7 @@ package notes.project.oaut2registration.utils.auth.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
 import notes.project.oaut2registration.config.oauth.dto.JwtDto;
@@ -24,7 +25,7 @@ public class AuthHelperImpl implements AuthHelper {
 
     @Override
     public String getCurrentUserName() {
-        JwtDto jwt = (JwtDto) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        JwtDto jwt = extractJwt();
         if(Objects.isNull(jwt.getUserName())) {
             throw new SecurityContextException("No username found in context");
         }
@@ -34,5 +35,18 @@ public class AuthHelperImpl implements AuthHelper {
     @Override
     public String getCurrentAuthority() {
         return List.of(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray()).get(0).toString();
+    }
+
+    @Override
+    public UUID getCurrentExternalId() {
+        JwtDto jwtDto = extractJwt();
+        if(Objects.isNull(jwtDto.getExternalId())) {
+            throw new SecurityContextException("No external id found in context");
+        }
+        return jwtDto.getExternalId();
+    }
+
+    private JwtDto extractJwt() {
+        return (JwtDto) SecurityContextHolder.getContext().getAuthentication().getCredentials();
     }
 }

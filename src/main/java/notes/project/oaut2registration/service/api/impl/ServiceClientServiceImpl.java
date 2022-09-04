@@ -1,15 +1,13 @@
 package notes.project.oaut2registration.service.api.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.ChangeServiceClientRolesRequestDto;
-import notes.project.oaut2registration.dto.ChangeServiceClientRolesResponseDto;
-import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
-import notes.project.oaut2registration.dto.ServiceClientRegistrationResponseDto;
+import notes.project.oaut2registration.dto.*;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.*;
 import notes.project.oaut2registration.repository.ServiceClientRepository;
@@ -23,6 +21,7 @@ import notes.project.oaut2registration.utils.mapper.dto.ServiceClientHistoryMapp
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientRegistrationMappingDto;
 import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
+import notes.project.oaut2registration.utils.validation.dto.ChangePasswordValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +44,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     private final ServiceClientHistoryMapper serviceClientHistoryMapper;
     private final Validator<ChangeSystemClientRoleValidationDto> changeServiceClientRolesValidator;
     private final ChangeServiceClientRolesResponseMapper changeServiceClientRolesResponseMapper;
+    private final Validator<ChangePasswordValidationDto> changePasswordValidator;
 
 
     @Override
@@ -112,6 +112,36 @@ public class ServiceClientServiceImpl implements ServiceClientService {
         serviceClientHistoryService.save(serviceClientHistory);
         oauthAccessTokenService.deleteAccessTokenByClientIdAndUserName(currentClientId, serviceClient.getUsername());
         return changeServiceClientRolesResponseMapper.to(serviceClient);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(ChangePasswordRequestDto request) {
+        UUID operatorExternalId = authHelper.getCurrentExternalId();
+        ServiceClient operator = findByExternalId(operatorExternalId);
+        ServiceClientHistory serviceClientHistory;
+        if(Objects.nonNull(request.getExternalId())) {
+            ServiceClient clientToChange = findByExternalId(request.getExternalId());
+            changePassword(clientToChange, request);
+            serviceClientHistory = serviceClientHistoryMapper.to(new ServiceClientHistoryMappingDto(
+                clientToChange,
+                operator,
+                HistoryEvent.PASSWORD_CHANGED
+            ));
+        } else {
+            changePassword(operator, request);
+            serviceClientHistory = serviceClientHistoryMapper.to(new ServiceClientHistoryMappingDto(
+                operator,
+                operator,
+                HistoryEvent.PASSWORD_CHANGED
+            ));
+        }
+        serviceClientHistoryService.save(serviceClientHistory);
+    }
+
+    private void changePassword(ServiceClient serviceClient, ChangePasswordRequestDto request) {
+        changePasswordValidator.validate(new ChangePasswordValidationDto(request, serviceClient.getPassword()));
+        serviceClient.setPassword(passwordEncoder.encode(request.getNewPassword()));
     }
 
     private List<Role> findAllRolesByClientIdAndRoleTitles(String clientId, List<String> roleTitles) {
