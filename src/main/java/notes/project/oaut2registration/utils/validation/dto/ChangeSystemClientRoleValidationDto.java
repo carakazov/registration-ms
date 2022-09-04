@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesRequestDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesRequestDto;
 
 @Data
 @Accessors(chain = true)

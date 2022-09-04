@@ -1,12 +1,10 @@
 package notes.project.oaut2registration.service.integration;
 
-import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationRequestDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
 import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.service.integration.impl.ServiceClientRegistrationProducerImpl;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
-import notes.project.oaut2registration.utils.IntegrationUtils;
 import notes.project.oaut2registration.utils.mapper.SendAdditionalInfoMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

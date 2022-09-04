@@ -1,4 +1,4 @@
-package notes.project.oaut2registration.dto.api;
+package notes.project.oaut2registration.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package notes.project.oaut2registration.dto.api;
+package notes.project.oaut2registration.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

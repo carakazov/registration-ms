@@ -1,10 +1,7 @@
 package notes.project.oaut2registration.utils.mapper;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import notes.project.oaut2registration.dto.api.ServiceClientAuthInformationDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationResponseDto;
+import notes.project.oaut2registration.dto.ServiceClientAuthInformationDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationResponseDto;
 import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientRegistrationMappingDto;
 import org.mapstruct.Mapper;

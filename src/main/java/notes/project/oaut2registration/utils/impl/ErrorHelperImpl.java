@@ -1,18 +1,18 @@
 package notes.project.oaut2registration.utils.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import notes.project.oaut2registration.config.ApplicationProperties;
+import notes.project.oaut2registration.dto.ErrorDto;
+import notes.project.oaut2registration.dto.ValidationErrorDto;
 import notes.project.oaut2registration.exception.*;
 import notes.project.oaut2registration.utils.ErrorHelper;
-import notes.project.oaut2registration.dto.api.ErrorDto;
-import notes.project.oaut2registration.dto.api.ValidationErrorDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @Slf4j

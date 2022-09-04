@@ -1,9 +1,6 @@
 package notes.project.oaut2registration.utils.validation.impl;
 
 
-import java.util.Objects;
-
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesRequestDto;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.utils.ValidationHelper;
 import notes.project.oaut2registration.utils.validation.Validator;

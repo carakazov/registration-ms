@@ -1,11 +1,9 @@
 package notes.project.oaut2registration.config.oauth.dto;
 
-import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
-import liquibase.exception.DatabaseException;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -21,4 +19,5 @@ public class JwtDto {
     private String clientId;
     private String[] scope;
     private Date expiresAt;
+    private UUID externalId;
 }

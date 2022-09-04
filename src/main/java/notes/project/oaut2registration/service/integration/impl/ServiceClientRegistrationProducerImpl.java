@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 
 import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationRequestDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
 import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationProducer;
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationPublisher;

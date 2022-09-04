@@ -2,15 +2,12 @@ package notes.project.oaut2registration.service.api;
 
 import java.util.Optional;
 
-import notes.project.oaut2registration.dto.api.CreateRoleRequestDto;
+import notes.project.oaut2registration.dto.CreateRoleRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.model.Role;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.repository.RoleRepository;
-import notes.project.oaut2registration.service.api.OauthClientDetailsService;
-import notes.project.oaut2registration.service.api.RoleService;
-import notes.project.oaut2registration.service.api.SystemScopeService;
 import notes.project.oaut2registration.service.api.impl.RoleServiceImpl;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
@@ -18,7 +15,6 @@ import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.mapper.CreateRoleMapper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.CreateRoleValidationDto;
-import org.apache.zookeeper.Op;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,12 +22,13 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static notes.project.oaut2registration.utils.TestDataConstants.CLIENT_ID;
+import static notes.project.oaut2registration.utils.TestDataConstants.ROLE_TITLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 class RoleServiceImplTest {

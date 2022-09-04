@@ -1,7 +1,6 @@
-package notes.project.oaut2registration.dto.api;
+package notes.project.oaut2registration.dto;
 
 import java.util.List;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

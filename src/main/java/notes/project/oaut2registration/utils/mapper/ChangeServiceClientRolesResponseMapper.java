@@ -3,7 +3,7 @@ package notes.project.oaut2registration.utils.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesResponseDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesResponseDto;
 import notes.project.oaut2registration.model.Role;
 import notes.project.oaut2registration.model.ServiceClient;
 import org.mapstruct.Mapper;

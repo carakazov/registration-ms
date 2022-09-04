@@ -2,10 +2,8 @@ package notes.project.oaut2registration.utils;
 
 import java.util.Collections;
 
-import javax.print.attribute.standard.MediaSize;
-
 import lombok.experimental.UtilityClass;
-import notes.project.oaut2registration.dto.api.*;
+import notes.project.oaut2registration.dto.*;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.exception.ValidationException;
 import notes.project.oaut2registration.model.Scope;

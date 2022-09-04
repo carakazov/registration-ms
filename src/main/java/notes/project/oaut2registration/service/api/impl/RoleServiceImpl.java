@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.api.CreateRoleRequestDto;
+import notes.project.oaut2registration.dto.CreateRoleRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.model.Role;
