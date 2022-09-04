@@ -1,17 +1,15 @@
 package notes.project.oaut2registration.service.api.impl;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesRequestDto;
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesResponseDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationRequestDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationResponseDto;
-import notes.project.oaut2registration.exception.ExceptionCode;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesRequestDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesResponseDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationResponseDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.*;
 import notes.project.oaut2registration.repository.ServiceClientRepository;

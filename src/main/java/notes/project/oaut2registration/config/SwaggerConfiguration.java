@@ -3,8 +3,8 @@ package notes.project.oaut2registration.config;
 import java.util.Collections;
 
 import com.fasterxml.classmate.TypeResolver;
-import notes.project.oaut2registration.dto.api.ErrorDto;
-import notes.project.oaut2registration.dto.api.ValidationErrorDto;
+import notes.project.oaut2registration.dto.ErrorDto;
+import notes.project.oaut2registration.dto.ValidationErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

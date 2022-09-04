@@ -2,10 +2,10 @@ package notes.project.oaut2registration.service.api;
 
 import java.util.UUID;
 
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesRequestDto;
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesResponseDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationRequestDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationResponseDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesRequestDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesResponseDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationResponseDto;
 import notes.project.oaut2registration.model.ServiceClient;
 
 public interface ServiceClientService {

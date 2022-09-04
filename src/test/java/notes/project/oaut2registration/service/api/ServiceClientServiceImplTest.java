@@ -1,19 +1,16 @@
 package notes.project.oaut2registration.service.api;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesRequestDto;
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesResponseDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationRequestDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationResponseDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesResponseDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationResponseDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.model.Role;
 import notes.project.oaut2registration.model.ServiceClient;
-import notes.project.oaut2registration.model.ServiceClientHistory;
 import notes.project.oaut2registration.repository.ServiceClientRepository;
 import notes.project.oaut2registration.service.api.impl.ServiceClientServiceImpl;
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationProducer;
@@ -27,8 +24,6 @@ import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
-import notes.project.oaut2registration.utils.validation.impl.ChangeServiceClientRolesValidator;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,11 +32,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static notes.project.oaut2registration.utils.TestDataConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static notes.project.oaut2registration.utils.TestDataConstants.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ServiceClientServiceImplTest {

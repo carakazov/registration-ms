@@ -2,11 +2,10 @@ package notes.project.oaut2registration.service.api;
 
 import java.util.Optional;
 
-import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.repository.OauthClientDetailsServiceRepository;
-import notes.project.oaut2registration.service.api.OauthClientDetailsService;
 import notes.project.oaut2registration.service.api.impl.OauthClientDetailsServiceImpl;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
@@ -21,10 +20,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static notes.project.oaut2registration.utils.TestDataConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static notes.project.oaut2registration.utils.TestDataConstants.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

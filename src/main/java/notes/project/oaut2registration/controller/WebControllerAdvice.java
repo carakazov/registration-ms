@@ -1,8 +1,8 @@
 package notes.project.oaut2registration.controller;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.api.ErrorDto;
-import notes.project.oaut2registration.dto.api.ValidationErrorDto;
+import notes.project.oaut2registration.dto.ErrorDto;
+import notes.project.oaut2registration.dto.ValidationErrorDto;
 import notes.project.oaut2registration.exception.*;
 import notes.project.oaut2registration.utils.ErrorHelper;
 import org.springframework.http.HttpStatus;

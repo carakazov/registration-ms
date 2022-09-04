@@ -1,10 +1,8 @@
-package notes.project.oaut2registration.dto.api;
+package notes.project.oaut2registration.dto;
 
 import java.util.List;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

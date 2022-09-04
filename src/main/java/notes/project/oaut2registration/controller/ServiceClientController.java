@@ -7,10 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesRequestDto;
-import notes.project.oaut2registration.dto.api.ChangeServiceClientRolesResponseDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationRequestDto;
-import notes.project.oaut2registration.dto.api.ServiceClientRegistrationResponseDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesRequestDto;
+import notes.project.oaut2registration.dto.ChangeServiceClientRolesResponseDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
+import notes.project.oaut2registration.dto.ServiceClientRegistrationResponseDto;
 import notes.project.oaut2registration.service.api.ServiceClientService;
 import org.springframework.web.bind.annotation.*;
 

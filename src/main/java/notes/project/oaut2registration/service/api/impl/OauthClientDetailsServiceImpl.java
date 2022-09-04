@@ -3,7 +3,7 @@ package notes.project.oaut2registration.service.api.impl;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import notes.project.oaut2registration.dto.api.SystemRegistrationRequestDto;
+import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.repository.OauthClientDetailsServiceRepository;
