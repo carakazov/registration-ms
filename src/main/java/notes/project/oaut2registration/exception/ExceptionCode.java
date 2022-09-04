@@ -19,7 +19,9 @@ public enum ExceptionCode {
     SERVICE_CLIENT_NOT_FOUND("serviceClientNotFound"),
     SAME_ROLE_IN_BOTH_LISTS("sameRoleInBothLists"),
     USER_NOT_HAVE_ROLE("userNotHaveRole"),
-    USER_ALREADY_HAS_ROLE("userAlreadyHasRole");
+    USER_ALREADY_HAS_ROLE("userAlreadyHasRole"),
+    PASSWORDS_ARE_EQUAL("passwordsAreEqual"),
+    INCORRECT_OLD_PASSWORD("incorrectOldPassword");
     @Getter
     private final String code;
 

@@ -44,6 +44,9 @@ application:
     sameRoleInBothLists: Same role can not be in both lists.
     userNotHaveRole: User does not have role from list.
     userAlreadyHasRole: User already has one of theese roles.
+    passowrdAreEqual: New password can not be equal to old one.
+    incorrectOldPassowrd: Incorrect old password.
+
   systemRegistrationKeyWords:
     - my-super-secret
     - another-my-secret

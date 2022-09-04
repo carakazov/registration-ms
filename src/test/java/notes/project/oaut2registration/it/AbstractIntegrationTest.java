@@ -8,7 +8,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import notes.project.oaut2registration.config.ApplicationProperties;
@@ -16,34 +15,19 @@ import notes.project.oaut2registration.config.oauth.dto.JwtDto;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.utils.TestAsyncTaskExecutor;
-import org.apache.commons.dbcp.cpdsadapter.DriverAdapterCPDS;
-import org.apache.commons.dbcp.datasources.SharedPoolDataSource;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.json.JSONException;
-import org.junit.jupiter.api.AfterEach;
-import org.postgresql.ds.PGSimpleDataSource;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
@@ -106,7 +90,7 @@ public abstract class AbstractIntegrationTest {
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(
                 CLIENT_ID,
-                new JwtDto().setUserName(USERNAME),
+                new JwtDto().setUserName(USERNAME).setExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID),
                 Collections.singletonList(new SimpleGrantedAuthority(scope.toString()))
             )
         );

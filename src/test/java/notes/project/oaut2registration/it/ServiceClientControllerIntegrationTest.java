@@ -8,7 +8,10 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import notes.project.oaut2registration.controller.ServiceClientController;
-import notes.project.oaut2registration.model.*;
+import notes.project.oaut2registration.model.Role;
+import notes.project.oaut2registration.model.Scope;
+import notes.project.oaut2registration.model.ServiceClient;
+import notes.project.oaut2registration.model.ServiceClientHistory;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.TestUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -22,16 +25,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("it")
 @ExtendWith(SpringExtension.class)
@@ -44,6 +46,9 @@ class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Inject
     private ServiceClientController controller;
+
+    @Inject
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
@@ -123,5 +128,23 @@ class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
             actual,
             false
         );
+    }
+
+    @Test
+    void changePasswordSuccess() throws Exception {
+        setSecurityContext(Scope.CHANGE_PASSWORD);
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.role());
+        ServiceClient operator = DbUtils.operator().setExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID);
+        testEntityManager.merge(DbUtils.serviceClient());
+        testEntityManager.merge(operator);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/client/changePassword")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtils.getClasspathResource("/api/ChangePasswordRequest.json")));
+
+        ServiceClient serviceClient = getServiceClient();
+
+        assertTrue(passwordEncoder.matches("some-new-password", serviceClient.getPassword()));
     }
 }

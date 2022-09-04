@@ -2,11 +2,8 @@ package notes.project.oaut2registration.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-import static java.util.Map.entry;
 import lombok.experimental.UtilityClass;
 import notes.project.oaut2registration.model.Authority;
 import notes.project.oaut2registration.model.Scope;
@@ -52,7 +49,6 @@ public class TestDataConstants {
     public static final LocalDate DATE_OF_BIRTH = LocalDate.of(2000, 1, 1);
     public static final String ADDITIONAL_FIELD_NAME = "additional field name";
     public static final String ADDITIONAL_VALUE = "additional value";
-    public static final Map<String, Object> ADDITIONAL_INFO = Map.ofEntries(entry("custom-key", "custom-value"));
     public static final String SERVICE_CLIENT_EXTERNAL_ID_STRING = "98fcee4c-452a-4d58-9960-ddd6e0eb47dc";
     public static final UUID SERVICE_CLIENT_EXTERNAL_ID = UUID.fromString(SERVICE_CLIENT_EXTERNAL_ID_STRING);
     public static final LocalDateTime REGISTRATION_DATE = LocalDateTime.of(2022, 8, 29, 10, 10, 10);
@@ -61,4 +57,9 @@ public class TestDataConstants {
     public static final String ROLE_TO_REMOVE = "ROLE_TO_REMOVE";
     public static final String ROLE_TO_ADD = "ROLE_TO_ADD";
     public static final LocalDateTime EVENT_DATE = LocalDateTime.of(2022, 8, 10, 10, 10, 10);
+
+    public static final String NEW_PASSWORD_PLAIN = "some-new-password";
+    public static final String NEW_PASSWORD_ENCODED = "$2a$12$cx1VaaHbUBnDiYdhZMOQVe5KP3kQODsfloZuA3FcK4VGkPBJFY/5q";
+    public static final String OPERATOR_SERVICE_CLIENT_EXTERNAL_ID_STRING = "ba1ccdc4-a199-45b4-b09e-c96cba4fd76d";
+    public static final UUID OPERATOR_SERVICE_CLIENT_EXTERNAL_ID = UUID.fromString(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID_STRING);
 }

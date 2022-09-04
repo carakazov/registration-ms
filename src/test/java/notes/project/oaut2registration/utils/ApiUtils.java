@@ -7,15 +7,25 @@ import notes.project.oaut2registration.dto.*;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.exception.ValidationException;
 import notes.project.oaut2registration.model.Scope;
-import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
-import notes.project.oaut2registration.utils.validation.dto.CreateRoleValidationDto;
-import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
-import notes.project.oaut2registration.utils.validation.dto.SystemRegistrationValidationDto;
+import notes.project.oaut2registration.utils.validation.dto.*;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+
+    public static ChangePasswordValidationDto changePasswordValidationDto() {
+        return new ChangePasswordValidationDto()
+            .setRequest(changePasswordRequestDto())
+            .setCurrentPassword(ENCODED_PASSWORD);
+    }
+
+    public static ChangePasswordRequestDto changePasswordRequestDto() {
+        return new ChangePasswordRequestDto()
+            .setExternalId(SERVICE_CLIENT_EXTERNAL_ID)
+            .setOldPassword(PLAIN_PASSWORD)
+            .setNewPassword(NEW_PASSWORD_PLAIN);
+    }
 
     public static ChangeServiceClientRolesResponseDto changeServiceClientRolesResponseDto() {
         return new ChangeServiceClientRolesResponseDto()
