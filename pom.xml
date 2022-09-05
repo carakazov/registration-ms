@@ -288,7 +288,7 @@
                             <sources>
                                 <!-- if you put path only, it will read any wsdl or xsd file -->
                                 <!-- if you have xsd that is imported in wsdl, then make sure you point it wsdl file -->
-                                <source>${project.basedir}/src/main/resources/xjc/xsd/ServiceRegistrationKafkaResponse.xsd</source>
+                                <source>${project.basedir}/src/main/resources/xjc/xsd/</source>
                             </sources>
                             <clearOutputDir>true</clearOutputDir>
                             <packageName>dto.integration.kafka</packageName>

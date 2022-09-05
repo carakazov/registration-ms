@@ -10,6 +10,15 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 @UtilityClass
 public class DbUtils {
 
+    public static RestorePasswordStruct restorePasswordStruct() {
+        return new RestorePasswordStruct()
+            .setId(ID)
+            .setDetails(oauthClientDetails())
+            .setNewPassword(NEW_PASSWORD_ENCODED)
+            .setRestoreCode(RESTORE_CODE)
+            .setInProcess(Boolean.TRUE);
+    }
+
     public static ServiceClientHistory serviceClientHistory() {
         return new ServiceClientHistory()
             .setId(ID)

@@ -13,4 +13,6 @@ public interface ServiceClientService {
     ServiceClient findByExternalId(UUID externalId);
 
     void changePassword(ChangePasswordRequestDto request);
+
+    void initializeRestorePasswordRequest(InitializePasswordRestoreRequestDto request);
 }

@@ -1,16 +1,23 @@
 package notes.project.oaut2registration.utils;
 
-import java.util.Collections;
-
+import dto.integration.kafka.RestorePasswordRequestKafkaDto;
 import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
 import dto.integration.kafka.ServiceClientAdditionalInfoRecordKafkaDto;
 import lombok.experimental.UtilityClass;
-
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class IntegrationUtils {
+
+    public static RestorePasswordRequestKafkaDto restorePasswordRequestKafkaDto() {
+        RestorePasswordRequestKafkaDto dto = new RestorePasswordRequestKafkaDto();
+        dto.setClientId(CLIENT_ID);
+        dto.setRestoreCode(RESTORE_CODE);
+        dto.setContact(EMAIL);
+        return dto;
+    }
+
     public static ServiceClientAdditionalInfoKafkaDto serviceClientAdditionalInfoKafkaDto() {
         ServiceClientAdditionalInfoKafkaDto dto = new ServiceClientAdditionalInfoKafkaDto();
         dto.setName(NAME);

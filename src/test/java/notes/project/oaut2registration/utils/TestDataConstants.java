@@ -62,4 +62,7 @@ public class TestDataConstants {
     public static final String NEW_PASSWORD_ENCODED = "$2a$12$cx1VaaHbUBnDiYdhZMOQVe5KP3kQODsfloZuA3FcK4VGkPBJFY/5q";
     public static final String OPERATOR_SERVICE_CLIENT_EXTERNAL_ID_STRING = "ba1ccdc4-a199-45b4-b09e-c96cba4fd76d";
     public static final UUID OPERATOR_SERVICE_CLIENT_EXTERNAL_ID = UUID.fromString(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID_STRING);
+
+    public static final String RESTORE_CODE = "Kg5853C2cI77BdTVGyJGW53sQ";
+    public static final String RESTORE_PASSWORD_TOPIC = "restore-password-topic";
 }

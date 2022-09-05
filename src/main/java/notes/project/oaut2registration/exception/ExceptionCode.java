@@ -21,7 +21,8 @@ public enum ExceptionCode {
     USER_NOT_HAVE_ROLE("userNotHaveRole"),
     USER_ALREADY_HAS_ROLE("userAlreadyHasRole"),
     PASSWORDS_ARE_EQUAL("passwordsAreEqual"),
-    INCORRECT_OLD_PASSWORD("incorrectOldPassword");
+    INCORRECT_OLD_PASSWORD("incorrectOldPassword"),
+    RESTORE_PASSWORD_REQUEST_SENDING_EXCEPTION("restorePasswordRequestSendingException");
     @Getter
     private final String code;
 

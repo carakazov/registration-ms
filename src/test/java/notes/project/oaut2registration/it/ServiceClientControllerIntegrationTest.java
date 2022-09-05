@@ -8,10 +8,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import notes.project.oaut2registration.controller.ServiceClientController;
-import notes.project.oaut2registration.model.Role;
-import notes.project.oaut2registration.model.Scope;
-import notes.project.oaut2registration.model.ServiceClient;
-import notes.project.oaut2registration.model.ServiceClientHistory;
+import notes.project.oaut2registration.model.*;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.TestUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -146,5 +143,21 @@ class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
         ServiceClient serviceClient = getServiceClient();
 
         assertTrue(passwordEncoder.matches("some-new-password", serviceClient.getPassword()));
+    }
+
+    @Test
+    void restorePasswordSuccess() throws Exception {
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/client/restorePassword")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtils.getClasspathResource("/api/InitializeRestorePasswordRequest.json")));
+
+        RestorePasswordStruct struct = testEntityManager.getEntityManager().createQuery(
+            "select struct from restore_password_structs struct where struct.id = 1",
+            RestorePasswordStruct.class
+        ).getSingleResult();
+
+        assertNotNull(struct);
     }
 }

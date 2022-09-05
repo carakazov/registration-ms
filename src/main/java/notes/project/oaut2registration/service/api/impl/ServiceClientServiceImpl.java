@@ -12,11 +12,15 @@ import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.*;
 import notes.project.oaut2registration.repository.ServiceClientRepository;
 import notes.project.oaut2registration.service.api.*;
+import notes.project.oaut2registration.service.integration.RestorePasswordRequestProducer;
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationProducer;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
+import notes.project.oaut2registration.utils.code.RestoreCodeGenerator;
 import notes.project.oaut2registration.utils.mapper.ChangeServiceClientRolesResponseMapper;
+import notes.project.oaut2registration.utils.mapper.RestorePasswordStructMapper;
 import notes.project.oaut2registration.utils.mapper.ServiceClientHistoryMapper;
 import notes.project.oaut2registration.utils.mapper.ServiceClientRegistrationMapper;
+import notes.project.oaut2registration.utils.mapper.dto.RestorePasswordStructMappingDto;
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientHistoryMappingDto;
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientRegistrationMappingDto;
 import notes.project.oaut2registration.utils.uuid.UuidHelper;
@@ -45,6 +49,10 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     private final Validator<ChangeSystemClientRoleValidationDto> changeServiceClientRolesValidator;
     private final ChangeServiceClientRolesResponseMapper changeServiceClientRolesResponseMapper;
     private final Validator<ChangePasswordValidationDto> changePasswordValidator;
+    private final RestorePasswordRequestProducer restorePasswordRequestProducer;
+    private final RestorePasswordStructMapper restorePasswordStructMapper;
+    private final RestoreCodeGenerator restoreCodeGenerator;
+    private final RestorePasswordStructService restorePasswordStructService;
 
 
     @Override
@@ -137,6 +145,21 @@ public class ServiceClientServiceImpl implements ServiceClientService {
             ));
         }
         serviceClientHistoryService.save(serviceClientHistory);
+    }
+
+    @Override
+    @Transactional
+    public void initializeRestorePasswordRequest(InitializePasswordRestoreRequestDto request) {
+        OauthClientDetails details = oauthClientDetailsService.findByClientId(request.getClientId());
+        RestorePasswordStruct struct = restorePasswordStructMapper.to(
+            new RestorePasswordStructMappingDto(
+                details,
+                restoreCodeGenerator.generate(),
+                passwordEncoder.encode(request.getNewPassword())
+            )
+        );
+        struct = restorePasswordStructService.save(struct);
+        restorePasswordRequestProducer.produceMessage(struct, request.getContact());
     }
 
     private void changePassword(ServiceClient serviceClient, ChangePasswordRequestDto request) {

@@ -1,0 +1,27 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="009" author="vadim.lebediantsev">
+        <createTable tableName="restore_password_structs">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="client_id" type="varchar(255)">
+                <constraints foreignKeyName="oauth_client_details_fk" references="oauth_client_details(client_id)"/>
+            </column>
+            <column name="restore_code" type="varchar(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="new_password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="in_process" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

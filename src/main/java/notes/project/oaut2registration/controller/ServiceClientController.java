@@ -35,7 +35,13 @@ public class ServiceClientController {
 
     @PutMapping("/changePassword")
     @ApiOperation(value = "Смена пароля")
-    public void changePassword(@RequestBody ChangePasswordRequestDto request) {
+    public void changePassword(@RequestBody @Valid ChangePasswordRequestDto request) {
         serviceClientService.changePassword(request);
+    }
+
+    @PostMapping("/restorePassword")
+    @ApiOperation(value = "Запрос на создание заявки по восстановлению пароля")
+    public void initializeRestorePasswordProcess(@RequestBody @Valid InitializePasswordRestoreRequestDto request) {
+        serviceClientService.initializeRestorePasswordRequest(request);
     }
 }
