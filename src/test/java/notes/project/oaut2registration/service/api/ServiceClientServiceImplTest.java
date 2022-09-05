@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import notes.project.oaut2registration.dto.ChangePasswordRequestDto;
-import notes.project.oaut2registration.dto.ChangeServiceClientRolesResponseDto;
-import notes.project.oaut2registration.dto.ServiceClientRegistrationRequestDto;
-import notes.project.oaut2registration.dto.ServiceClientRegistrationResponseDto;
+import notes.project.oaut2registration.dto.*;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.*;
 import notes.project.oaut2registration.repository.ServiceClientRepository;
 import notes.project.oaut2registration.service.api.impl.ServiceClientServiceImpl;
+import notes.project.oaut2registration.service.integration.RestorePasswordRequestProducer;
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationProducer;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
+import notes.project.oaut2registration.utils.code.RestoreCodeGenerator;
 import notes.project.oaut2registration.utils.mapper.ChangeServiceClientRolesResponseMapper;
+import notes.project.oaut2registration.utils.mapper.RestorePasswordStructMapper;
 import notes.project.oaut2registration.utils.mapper.ServiceClientHistoryMapper;
 import notes.project.oaut2registration.utils.mapper.ServiceClientRegistrationMapper;
 import notes.project.oaut2registration.utils.uuid.UuidHelper;
@@ -65,6 +65,12 @@ class ServiceClientServiceImplTest {
     private Validator<ChangeSystemClientRoleValidationDto> changeServiceClientRolesValidator;
     @Mock
     private Validator<ChangePasswordValidationDto> changePasswordValidator;
+    @Mock
+    private RestorePasswordRequestProducer restorePasswordRequestProducer;
+    @Mock
+    private RestoreCodeGenerator restoreCodeGenerator;
+    @Mock
+    private RestorePasswordStructService restorePasswordStructService;
     private ServiceClientService service;
 
     @BeforeEach
@@ -84,7 +90,11 @@ class ServiceClientServiceImplTest {
             Mappers.getMapper(ServiceClientHistoryMapper.class),
             changeServiceClientRolesValidator,
             Mappers.getMapper(ChangeServiceClientRolesResponseMapper.class),
-            changePasswordValidator
+            changePasswordValidator,
+            restorePasswordRequestProducer,
+            Mappers.getMapper(RestorePasswordStructMapper.class),
+            restoreCodeGenerator,
+            restorePasswordStructService
         );
     }
 
@@ -227,5 +237,27 @@ class ServiceClientServiceImplTest {
         verify(repository).findByExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID);
         verify(passwordEncoder).encode(request.getNewPassword());
         verify(serviceClientHistoryService).save(serviceClientHistory.setId(null).setEventDate(null));
+    }
+
+    @Test
+    void initializeRestorePasswordRequestSuccess() {
+        OauthClientDetails details = DbUtils.oauthClientDetails();
+        RestorePasswordStruct struct = DbUtils.restorePasswordStruct();
+        InitializePasswordRestoreRequestDto request = ApiUtils.initializePasswordRestoreRequestDto();
+
+
+        when(oauthClientDetailsService.findByClientId(any())).thenReturn(details);
+        when(restoreCodeGenerator.generate()).thenReturn(RESTORE_CODE);
+        when(passwordEncoder.encode(any())).thenReturn(NEW_PASSWORD_ENCODED);
+        when(restorePasswordStructService.save(any())).thenReturn(struct);
+
+        service.initializeRestorePasswordRequest(request);
+
+        verify(oauthClientDetailsService).findByClientId(request.getClientId());
+        verify(restoreCodeGenerator).generate();
+        verify(passwordEncoder).encode(request.getNewPassword());
+        verify(restorePasswordStructService).save(struct.setId(null));
+        verify(restorePasswordRequestProducer).produceMessage(struct, request.getContact());
+
     }
 }

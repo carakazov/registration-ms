@@ -18,4 +18,6 @@
    <include file="changelog/patches/new-user-registration/new-user-registration.xml"/>
    <!--changing-roles-->
    <include file="changelog/patches/changing-roles/changing-roles.xml"/>
+   <!--restoring-password-->
+   <include file="changelog/patches/initialize-restoring-process/initialize-restoring-process.xml"/>
 </databaseChangeLog>

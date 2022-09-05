@@ -14,6 +14,13 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 @UtilityClass
 public class ApiUtils {
 
+    public static InitializePasswordRestoreRequestDto initializePasswordRestoreRequestDto() {
+        return new InitializePasswordRestoreRequestDto()
+            .setClientId(CLIENT_ID)
+            .setContact(EMAIL)
+            .setNewPassword(NEW_PASSWORD_PLAIN);
+    }
+
     public static ChangePasswordValidationDto changePasswordValidationDto() {
         return new ChangePasswordValidationDto()
             .setRequest(changePasswordRequestDto())

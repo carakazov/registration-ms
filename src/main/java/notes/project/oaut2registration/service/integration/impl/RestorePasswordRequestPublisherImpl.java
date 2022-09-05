@@ -4,38 +4,37 @@ import java.io.StringWriter;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import dto.integration.kafka.ServiceClientAdditionalInfoKafkaDto;
+import dto.integration.kafka.RestorePasswordRequestKafkaDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import notes.project.oaut2registration.exception.ExceptionCode;
-import notes.project.oaut2registration.service.integration.ServiceClientRegistrationPublisher;
+import notes.project.oaut2registration.service.integration.RestorePasswordRequestPublisher;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ServiceClientRegistrationPublisherImpl extends AbstractPublisher implements ServiceClientRegistrationPublisher {
-    private static final String CLIENT_ADDITIONAL_INFO_BINDING = "registered-clients-topic";
+public class RestorePasswordRequestPublisherImpl extends AbstractPublisher implements RestorePasswordRequestPublisher {
+    private static final  String RESTORE_PASSWORD_REQUEST_TOPIC = "restore-password-topic";
 
     private final StreamBridge streamBridge;
     private final Marshaller marshaller;
 
     @Override
-    public void publishMessage(ServiceClientAdditionalInfoKafkaDto message) {
+    public void publishMessage(RestorePasswordRequestKafkaDto message) {
         boolean sent = false;
         try {
             StringWriter stringWriter = new StringWriter();
             marshaller.marshal(message, stringWriter);
-            sent = streamBridge.send(CLIENT_ADDITIONAL_INFO_BINDING, stringWriter.toString());
+            sent = streamBridge.send(RESTORE_PASSWORD_REQUEST_TOPIC, stringWriter.toString());
         } catch(RuntimeException exception) {
-            sendFatalException(ExceptionCode.ADDITIONAL_INFO_SENDING_EXCEPTION, exception);
+            sendFatalException(ExceptionCode.RESTORE_PASSWORD_REQUEST_SENDING_EXCEPTION, exception);
         } catch(JAXBException exception) {
-            sendNotFatalException(ExceptionCode.ADDITIONAL_INFO_SENDING_EXCEPTION);
+            sendNotFatalException(ExceptionCode.RESTORE_PASSWORD_REQUEST_SENDING_EXCEPTION);
         }
         if(!sent) {
-            sendNotFatalException(ExceptionCode.ADDITIONAL_INFO_SENDING_EXCEPTION);
+            sendNotFatalException(ExceptionCode.RESTORE_PASSWORD_REQUEST_SENDING_EXCEPTION);
         }
     }
-
 }

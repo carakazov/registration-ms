@@ -22,6 +22,9 @@ spring:
         registered-clients-topic:
           destination: additional.info.topic
           group: registration.ms.group
+        restore-password-topic:
+          destinaion: restore.password.topic
+          goup: registration.ms.group
 
 
 
@@ -46,6 +49,7 @@ application:
     userAlreadyHasRole: User already has one of theese roles.
     passowrdAreEqual: New password can not be equal to old one.
     incorrectOldPassowrd: Incorrect old password.
+    restorePasswordRequestSendingException: Exception while sending request to restore password.
 
   systemRegistrationKeyWords:
     - my-super-secret
