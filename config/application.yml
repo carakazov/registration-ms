@@ -50,6 +50,8 @@ application:
     passowrdAreEqual: New password can not be equal to old one.
     incorrectOldPassowrd: Incorrect old password.
     restorePasswordRequestSendingException: Exception while sending request to restore password.
+    wrongPasswordExternalId: System does not contain client with such external id.
+    restoreCodeAlreadyUsed: Restore code already used.
 
   systemRegistrationKeyWords:
     - my-super-secret

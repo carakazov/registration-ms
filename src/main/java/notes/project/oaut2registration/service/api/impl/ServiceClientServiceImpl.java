@@ -27,6 +27,7 @@ import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.ChangePasswordValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
+import notes.project.oaut2registration.utils.validation.dto.RestorePasswordValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     private final RestorePasswordStructMapper restorePasswordStructMapper;
     private final RestoreCodeGenerator restoreCodeGenerator;
     private final RestorePasswordStructService restorePasswordStructService;
+    private final Validator<RestorePasswordValidationDto> restorePasswordValidator;
 
 
     @Override
@@ -160,6 +162,22 @@ public class ServiceClientServiceImpl implements ServiceClientService {
         );
         struct = restorePasswordStructService.save(struct);
         restorePasswordRequestProducer.produceMessage(struct, request.getContact());
+    }
+
+    @Override
+    @Transactional
+    public void restorePassword(UUID clientExternalId, String restoreCode) {
+        ServiceClient serviceClient = findByExternalId(clientExternalId);
+        RestorePasswordStruct struct = restorePasswordStructService.findByRestoreCode(restoreCode);
+        restorePasswordValidator.validate(
+            new RestorePasswordValidationDto(
+                oauthClientDetailsService.findByClientId(struct.getDetails().getClientId()),
+                serviceClient,
+                struct.getInProcess()
+            )
+        );
+        serviceClient.setPassword(struct.getNewPassword());
+        restorePasswordStructService.changeStructInProcessStatus(struct);
     }
 
     private void changePassword(ServiceClient serviceClient, ChangePasswordRequestDto request) {

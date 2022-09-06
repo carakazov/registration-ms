@@ -22,7 +22,9 @@ public enum ExceptionCode {
     USER_ALREADY_HAS_ROLE("userAlreadyHasRole"),
     PASSWORDS_ARE_EQUAL("passwordsAreEqual"),
     INCORRECT_OLD_PASSWORD("incorrectOldPassword"),
-    RESTORE_PASSWORD_REQUEST_SENDING_EXCEPTION("restorePasswordRequestSendingException");
+    RESTORE_PASSWORD_REQUEST_SENDING_EXCEPTION("restorePasswordRequestSendingException"),
+    WRONG_SERVICE_CLIENT_EXTERNAL_ID("wrongPasswordExternalId"),
+    RESTORE_CODE_ALREADY_USED("restoreCodeAlreadyUsed");
     @Getter
     private final String code;
 

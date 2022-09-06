@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("it")
 @ExtendWith(SpringExtension.class)
@@ -146,7 +147,7 @@ class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void restorePasswordSuccess() throws Exception {
+    void initializeRestorePasswordProcessSuccess() throws Exception {
         testEntityManager.merge(DbUtils.oauthClientDetails());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/client/restorePassword")
@@ -159,5 +160,25 @@ class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
         ).getSingleResult();
 
         assertNotNull(struct);
+    }
+
+    @Test
+    void restorePasswordSuccess() throws Exception {
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.role());
+        testEntityManager.merge(DbUtils.serviceClient());
+        testEntityManager.merge(DbUtils.restorePasswordStruct());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/client/Kg5853C2cI77BdTVGyJGW53sQ/98fcee4c-452a-4d58-9960-ddd6e0eb47dc"))
+            .andExpect(status().isOk());
+
+        ServiceClient serviceClient = getServiceClient();
+        RestorePasswordStruct struct = testEntityManager.getEntityManager().createQuery(
+            "select struct from restore_password_structs struct where struct.id = 1",
+            RestorePasswordStruct.class
+        ).getSingleResult();
+
+        assertEquals(NEW_PASSWORD_ENCODED, serviceClient.getPassword());
+        assertFalse(struct.getInProcess());
     }
 }
