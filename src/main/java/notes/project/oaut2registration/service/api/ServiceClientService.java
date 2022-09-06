@@ -15,4 +15,6 @@ public interface ServiceClientService {
     void changePassword(ChangePasswordRequestDto request);
 
     void initializeRestorePasswordRequest(InitializePasswordRestoreRequestDto request);
+
+    void restorePassword(UUID clientExternalId, String restoreCode);
 }

@@ -44,4 +44,13 @@ public class ServiceClientController {
     public void initializeRestorePasswordProcess(@RequestBody @Valid InitializePasswordRestoreRequestDto request) {
         serviceClientService.initializeRestorePasswordRequest(request);
     }
+
+    @GetMapping("/{restoreCode}/{clientExternalId}")
+    @ApiOperation(value = "Подтверждение нового пароля")
+    public void restorePassword(
+        @PathVariable(name = "restoreCode") @ApiParam(value = "Код восстановления") String restoreCode,
+        @PathVariable(name = "clientExternalId") @ApiParam(value = "Внешний ID клиента") UUID clientExternalId
+    ) {
+        serviceClientService.restorePassword(clientExternalId, restoreCode);
+    }
 }

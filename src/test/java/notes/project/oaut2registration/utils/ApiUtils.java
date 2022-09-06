@@ -13,6 +13,12 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+    public static RestorePasswordValidationDto restorePasswordValidationDto() {
+        return new RestorePasswordValidationDto()
+            .setDetails(DbUtils.oauthClientDetails())
+            .setServiceClient(DbUtils.serviceClient())
+            .setInProcess(Boolean.TRUE);
+    }
 
     public static InitializePasswordRestoreRequestDto initializePasswordRestoreRequestDto() {
         return new InitializePasswordRestoreRequestDto()

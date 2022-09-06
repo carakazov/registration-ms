@@ -23,6 +23,7 @@ import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.ChangePasswordValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
+import notes.project.oaut2registration.utils.validation.dto.RestorePasswordValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,6 +72,8 @@ class ServiceClientServiceImplTest {
     private RestoreCodeGenerator restoreCodeGenerator;
     @Mock
     private RestorePasswordStructService restorePasswordStructService;
+    @Mock
+    private Validator<RestorePasswordValidationDto> restorePasswordValidator;
     private ServiceClientService service;
 
     @BeforeEach
@@ -94,7 +97,8 @@ class ServiceClientServiceImplTest {
             restorePasswordRequestProducer,
             Mappers.getMapper(RestorePasswordStructMapper.class),
             restoreCodeGenerator,
-            restorePasswordStructService
+            restorePasswordStructService,
+            restorePasswordValidator
         );
     }
 
@@ -258,6 +262,24 @@ class ServiceClientServiceImplTest {
         verify(passwordEncoder).encode(request.getNewPassword());
         verify(restorePasswordStructService).save(struct.setId(null));
         verify(restorePasswordRequestProducer).produceMessage(struct, request.getContact());
+    }
 
+    @Test
+    void restorePasswordSuccess() {
+        ServiceClient serviceClient = DbUtils.serviceClient();
+        RestorePasswordStruct restorePasswordStruct = DbUtils.restorePasswordStruct();
+        OauthClientDetails details = DbUtils.oauthClientDetails();
+
+        when(repository.findByExternalId(any())).thenReturn(Optional.of(serviceClient));
+        when(restorePasswordStructService.findByRestoreCode(any())).thenReturn(restorePasswordStruct);
+        when(oauthClientDetailsService.findByClientId(any())).thenReturn(details);
+        when(restorePasswordStructService.changeStructInProcessStatus(any())).thenReturn(restorePasswordStruct.setInProcess(Boolean.FALSE));
+
+        service.restorePassword(SERVICE_CLIENT_EXTERNAL_ID, RESTORE_CODE);
+
+        verify(repository).findByExternalId(SERVICE_CLIENT_EXTERNAL_ID);
+        verify(restorePasswordStructService).findByRestoreCode(RESTORE_CODE);
+        verify(oauthClientDetailsService).findByClientId(details.getClientId());
+        verify(restorePasswordStructService).changeStructInProcessStatus(restorePasswordStruct);
     }
 }
