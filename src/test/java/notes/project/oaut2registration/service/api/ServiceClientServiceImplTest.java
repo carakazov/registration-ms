@@ -287,10 +287,20 @@ class ServiceClientServiceImplTest {
     void changeUserStatusSuccess() {
         when(authHelper.getClientId()).thenReturn(CLIENT_ID);
         when(repository.findByExternalIdAndOauthClientClientId(SERVICE_CLIENT_EXTERNAL_ID, CLIENT_ID)).thenReturn(Optional.of(DbUtils.serviceClient()));
+        when(authHelper.getCurrentExternalId()).thenReturn(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID);
+        when(repository.findByExternalId(any())).thenReturn(Optional.of(DbUtils.operator()));
+        when(serviceClientHistoryService.save(any())).thenReturn(DbUtils.serviceClientHistory());
 
         service.changeUserStatus(SERVICE_CLIENT_EXTERNAL_ID);
 
+        ServiceClientHistory history = DbUtils.serviceClientHistory();
+        history.getClient().setBlocked(Boolean.TRUE);
+        history.setId(null).setEventDate(null);
+
         verify(authHelper).getClientId();
         verify(repository).findByExternalIdAndOauthClientClientId(SERVICE_CLIENT_EXTERNAL_ID, CLIENT_ID);
+        verify(authHelper).getCurrentExternalId();
+        verify(repository).findByExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID);
+        verify(serviceClientHistoryService).save(history);
     }
 }

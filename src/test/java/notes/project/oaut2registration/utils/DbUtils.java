@@ -24,12 +24,12 @@ public class DbUtils {
             .setId(ID)
             .setClient(serviceClient())
             .setEventDate(EVENT_DATE)
-            .setEvent(HistoryEvent.BLOCK)
+            .setEvent(HistoryEvent.CHANGE_BLOCK_STATUS)
             .setOperator(operator());
     }
 
     public static ServiceClient operator() {
-        return serviceClient().setId(ID_2);
+        return serviceClient().setId(ID_2).setExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID);
     }
 
     public static ServiceClient serviceClient() {

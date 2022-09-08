@@ -184,9 +184,18 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     @Transactional
     public void changeUserStatus(UUID externalId) {
         String clientId = authHelper.getClientId();
+        UUID operatorExternalId = authHelper.getCurrentExternalId();
         ServiceClient serviceClient = repository.findByExternalIdAndOauthClientClientId(externalId, clientId)
             .orElseThrow(() -> new NotFoundException("Service client " + externalId + " does not exist in system " + clientId));
         serviceClient.setBlocked(!serviceClient.getBlocked());
+        ServiceClient operator = findByExternalId(operatorExternalId);
+        serviceClientHistoryService.save(serviceClientHistoryMapper.to(
+            new ServiceClientHistoryMappingDto(
+                serviceClient,
+                operator,
+                HistoryEvent.CHANGE_BLOCK_STATUS
+            )
+        ));
     }
 
     private void changePassword(ServiceClient serviceClient, ChangePasswordRequestDto request) {
