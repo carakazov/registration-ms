@@ -282,4 +282,15 @@ class ServiceClientServiceImplTest {
         verify(oauthClientDetailsService).findByClientId(details.getClientId());
         verify(restorePasswordStructService).changeStructInProcessStatus(restorePasswordStruct);
     }
+
+    @Test
+    void changeUserStatusSuccess() {
+        when(authHelper.getClientId()).thenReturn(CLIENT_ID);
+        when(repository.findByExternalIdAndOauthClientClientId(SERVICE_CLIENT_EXTERNAL_ID, CLIENT_ID)).thenReturn(Optional.of(DbUtils.serviceClient()));
+
+        service.changeUserStatus(SERVICE_CLIENT_EXTERNAL_ID);
+
+        verify(authHelper).getClientId();
+        verify(repository).findByExternalIdAndOauthClientClientId(SERVICE_CLIENT_EXTERNAL_ID, CLIENT_ID);
+    }
 }

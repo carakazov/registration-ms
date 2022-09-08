@@ -181,4 +181,19 @@ class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
         assertEquals(NEW_PASSWORD_ENCODED, serviceClient.getPassword());
         assertFalse(struct.getInProcess());
     }
+
+    @Test
+    void changeUserStatusSuccess() throws Exception {
+        setSecurityContext(Scope.CHANGE_BLOCKED_STATUS);
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.role());
+        testEntityManager.merge(DbUtils.serviceClient());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/client/98fcee4c-452a-4d58-9960-ddd6e0eb47dc/changeStatus"))
+            .andExpect(status().isOk());
+
+        ServiceClient serviceClient = getServiceClient();
+
+        assertTrue(serviceClient.getBlocked());
+    }
 }

@@ -180,6 +180,15 @@ public class ServiceClientServiceImpl implements ServiceClientService {
         restorePasswordStructService.changeStructInProcessStatus(struct);
     }
 
+    @Override
+    @Transactional
+    public void changeUserStatus(UUID externalId) {
+        String clientId = authHelper.getClientId();
+        ServiceClient serviceClient = repository.findByExternalIdAndOauthClientClientId(externalId, clientId)
+            .orElseThrow(() -> new NotFoundException("Service client " + externalId + " does not exist in system " + clientId));
+        serviceClient.setBlocked(!serviceClient.getBlocked());
+    }
+
     private void changePassword(ServiceClient serviceClient, ChangePasswordRequestDto request) {
         changePasswordValidator.validate(new ChangePasswordValidationDto(request, serviceClient.getPassword()));
         serviceClient.setPassword(passwordEncoder.encode(request.getNewPassword()));

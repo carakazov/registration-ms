@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+    private static final String OAUTH_CLIENT = "OAUTH_CLIENT";
+    private static final String ANON = "ANON";
 
     @Autowired
     private InnerScopeFilterService innerScopeFilterService;
@@ -28,11 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            .antMatchers("/role").hasAnyAuthority("OAUTH_CLIENT","CREATE_ROLE")
-            .antMatchers("/client").hasAnyAuthority("OAUTH_CLIENT", "REGISTER_USER", "ANON")
+            .antMatchers("/role").hasAnyAuthority(OAUTH_CLIENT,"CREATE_ROLE")
+            .antMatchers("/client").hasAnyAuthority(OAUTH_CLIENT, "REGISTER_USER", ANON)
             .antMatchers("/client/*/changeRoles").hasAnyAuthority("CHANGE_ROLES")
-            .antMatchers("/client/changePassword").hasAuthority("CHANGE_PASSWORD")
-            .antMatchers("/client/restorePassword").hasAuthority("ANON")
+            .antMatchers("/client/changePassword").hasAnyAuthority("CHANGE_PASSWORD", OAUTH_CLIENT)
+            .antMatchers("/client/restorePassword").hasAnyAuthority(ANON, OAUTH_CLIENT)
+            .antMatchers("/client/*/changeStatus").hasAuthority("CHANGE_BLOCKED_STATUS")
             .and()
             .addFilterBefore(new InnerScopeFilter(innerScopeFilterService), BasicAuthenticationFilter.class);
     }

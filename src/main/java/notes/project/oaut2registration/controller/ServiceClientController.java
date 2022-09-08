@@ -53,4 +53,10 @@ public class ServiceClientController {
     ) {
         serviceClientService.restorePassword(clientExternalId, restoreCode);
     }
+
+    @PutMapping("/{externalId}/changeStatus")
+    @ApiOperation(value = "Бан/разбан пользователя")
+    public void changeStatus(@PathVariable(name = "externalId") @ApiParam(value = "Внешний ID пользователя") UUID clientExternalId) {
+        serviceClientService.changeUserStatus(clientExternalId);
+    }
 }
