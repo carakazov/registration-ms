@@ -12,4 +12,5 @@ public interface ServiceClientRepository extends JpaRepository<ServiceClient, Lo
     ServiceClient findByUsernameAndOauthClientClientId(String username, String clientId);
     Boolean existsByUsernameAndOauthClientClientId(String username, String clientId);
     Optional<ServiceClient> findByExternalId(UUID externalId);
+    Optional<ServiceClient> findByExternalIdAndOauthClientClientId(UUID externalId, String clientId);
 }

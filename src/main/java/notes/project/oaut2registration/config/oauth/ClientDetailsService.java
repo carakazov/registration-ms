@@ -3,12 +3,10 @@ package notes.project.oaut2registration.config.oauth;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import notes.project.oaut2registration.model.ServiceClient;
 import notes.project.oaut2registration.repository.ServiceClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service("userDetailsService")
+@Slf4j
 public class ClientDetailsService implements UserDetailsService {
     private final ServiceClientRepository serviceClientRepository;
 
@@ -28,8 +27,10 @@ public class ClientDetailsService implements UserDetailsService {
         try {
             String clientId = request.getParameter("client_id");
             ServiceClient serviceClient = serviceClientRepository.findByUsernameAndOauthClientClientId(username, clientId);
-            ClientDetails clientDetails = new ClientDetails(serviceClient);
-            return clientDetails;
+            if(Boolean.FALSE.equals(serviceClient.getBlocked())) {
+                return new ClientDetails(serviceClient);
+            }
+            throw new UsernameNotFoundException("User is banned");
         } catch(Exception e) {
             e.printStackTrace();
             throw new UsernameNotFoundException("User " + username + " was not found in the database");
