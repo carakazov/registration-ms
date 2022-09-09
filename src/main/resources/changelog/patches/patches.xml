@@ -20,4 +20,6 @@
    <include file="changelog/patches/changing-roles/changing-roles.xml"/>
    <!--restoring-password-->
    <include file="changelog/patches/initialize-restoring-process/initialize-restoring-process.xml"/>
+   <!--change-role-status-->
+   <include file="changelog/patches/change-role-status/change-role-status.xml"/>
 </databaseChangeLog>

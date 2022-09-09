@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/client/changePassword").hasAnyAuthority("CHANGE_PASSWORD", OAUTH_CLIENT)
             .antMatchers("/client/restorePassword").hasAnyAuthority(ANON, OAUTH_CLIENT)
             .antMatchers("/client/*/changeStatus").hasAuthority("CHANGE_BLOCKED_STATUS")
+            .antMatchers("/role/*/changeStatus").hasAuthority("CHANGE_ROLE_STATUS")
             .and()
             .addFilterBefore(new InnerScopeFilter(innerScopeFilterService), BasicAuthenticationFilter.class);
     }

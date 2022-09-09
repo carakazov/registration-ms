@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -62,5 +62,24 @@ class RoleControllerIntegrationTest extends AbstractIntegrationTest {
         ).getSingleResult();
 
         assertNotNull(role);
+    }
+
+
+    @Test
+    void changeRoleStatusSuccess() throws Exception {
+        setSecurityContext(Scope.CHANGE_ROLE_STATUS);
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.role());
+        testEntityManager.merge(DbUtils.serviceClient());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/role/TEST_ROLE/changeStatus"))
+            .andExpect(status().isOk());
+
+        Role role = testEntityManager.getEntityManager().createQuery(
+            "select role from roles role where role.id = 1",
+            Role.class
+        ).getSingleResult();
+
+        assertTrue(role.getBlocked());
     }
 }

@@ -27,4 +27,6 @@ public class Role {
         inverseJoinColumns = @JoinColumn(name = "system_scope_id")
     )
     private List<SystemScope> scopes;
+
+    private Boolean blocked = Boolean.FALSE;
 }

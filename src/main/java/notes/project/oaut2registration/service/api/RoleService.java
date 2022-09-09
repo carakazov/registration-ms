@@ -7,4 +7,6 @@ public interface RoleService {
     void createRole(CreateRoleRequestDto request);
 
     Role findByClientIdAndRoleTitle(String clientId, String roleTitle);
+
+    void changeRoleStatus(String roleTitle);
 }

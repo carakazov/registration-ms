@@ -51,4 +51,11 @@ public class RoleServiceImpl implements RoleService {
         return repository.findByDetailsClientIdAndRoleTitle(clientId, roleTitle)
             .orElseThrow(() -> new NotFoundException("Role with title " + roleTitle + " not found in system " + clientId));
     }
+
+    @Override
+    @Transactional
+    public void changeRoleStatus(String roleTitle) {
+        Role role = findByClientIdAndRoleTitle(authHelper.getClientId(), roleTitle);
+        role.setBlocked(!role.getBlocked());
+    }
 }
