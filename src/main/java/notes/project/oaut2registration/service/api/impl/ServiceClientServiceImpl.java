@@ -193,7 +193,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
             new ServiceClientHistoryMappingDto(
                 serviceClient,
                 operator,
-                HistoryEvent.CHANGE_BLOCK_STATUS
+                Boolean.TRUE.equals(serviceClient.getBlocked()) ? HistoryEvent.BLOCKED : HistoryEvent.UNBLOCK
             )
         ));
     }

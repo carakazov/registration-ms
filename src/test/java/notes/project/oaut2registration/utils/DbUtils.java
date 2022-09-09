@@ -24,7 +24,7 @@ public class DbUtils {
             .setId(ID)
             .setClient(serviceClient())
             .setEventDate(EVENT_DATE)
-            .setEvent(HistoryEvent.CHANGE_BLOCK_STATUS)
+            .setEvent(HistoryEvent.BLOCKED)
             .setOperator(operator());
     }
 
