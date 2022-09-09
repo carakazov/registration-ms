@@ -17,6 +17,7 @@ public class ClientDetails extends User {
             client.getUsername(),
             client.getPassword(),
             client.getRoles().stream()
+                .filter(item -> Boolean.FALSE.equals(item.getBlocked()))
                 .map(item -> new SimpleGrantedAuthority(item.getRoleTitle()))
                 .collect(Collectors.toList())
         );

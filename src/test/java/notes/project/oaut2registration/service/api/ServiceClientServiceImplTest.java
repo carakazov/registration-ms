@@ -1,6 +1,7 @@
 package notes.project.oaut2registration.service.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -302,5 +303,19 @@ class ServiceClientServiceImplTest {
         verify(authHelper).getCurrentExternalId();
         verify(repository).findByExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID);
         verify(serviceClientHistoryService).save(history);
+    }
+
+    @Test
+    void deleteTokenOfAllServiceClientOfRole() {
+        when(authHelper.getClientId()).thenReturn(CLIENT_ID);
+        when(roleService.findByClientIdAndRoleTitle(any(), any())).thenReturn(DbUtils.role());
+        when(repository.findAllByRolesContaining(any())).thenReturn(Collections.singletonList(DbUtils.serviceClient()));
+
+        service.deleteTokenOfAllServiceClientOfRole(ROLE_TITLE);
+
+        verify(authHelper).getClientId();
+        verify(roleService).findByClientIdAndRoleTitle(CLIENT_ID, ROLE_TITLE);
+        verify(repository).findAllByRolesContaining(DbUtils.role());
+        verify(oauthAccessTokenService).deleteAccessTokenByClientIdAndUserName(CLIENT_ID, USERNAME);
     }
 }

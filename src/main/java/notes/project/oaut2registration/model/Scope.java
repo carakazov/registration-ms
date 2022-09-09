@@ -7,5 +7,6 @@ public enum Scope {
     REGISTER_USER,
     GET_USER_STATUS_HISTORY,
     CHANGE_ROLES,
-    ANON
+    ANON,
+    CHANGE_ROLE_STATUS
 }

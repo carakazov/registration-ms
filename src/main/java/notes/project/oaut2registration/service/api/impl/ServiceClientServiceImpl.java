@@ -198,6 +198,15 @@ public class ServiceClientServiceImpl implements ServiceClientService {
         ));
     }
 
+    @Override
+    @Transactional
+    public void deleteTokenOfAllServiceClientOfRole(String roleTitle) {
+        String clientId = authHelper.getClientId();
+        Role role = roleService.findByClientIdAndRoleTitle(clientId, roleTitle);
+        List<ServiceClient> clients = repository.findAllByRolesContaining(role);
+        clients.forEach(item -> oauthAccessTokenService.deleteAccessTokenByClientIdAndUserName(clientId, item.getUsername()));
+    }
+
     private void changePassword(ServiceClient serviceClient, ChangePasswordRequestDto request) {
         changePasswordValidator.validate(new ChangePasswordValidationDto(request, serviceClient.getPassword()));
         serviceClient.setPassword(passwordEncoder.encode(request.getNewPassword()));

@@ -19,4 +19,6 @@ public interface ServiceClientService {
     void restorePassword(UUID clientExternalId, String restoreCode);
 
     void changeUserStatus(UUID externalId);
+
+    void deleteTokenOfAllServiceClientOfRole(String roleTitle);
 }

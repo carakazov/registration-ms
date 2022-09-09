@@ -24,8 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static notes.project.oaut2registration.utils.TestDataConstants.CLIENT_ID;
 import static notes.project.oaut2registration.utils.TestDataConstants.ROLE_TITLE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -101,6 +100,33 @@ class RoleServiceImplTest {
             () -> service.findByClientIdAndRoleTitle(CLIENT_ID, ROLE_TITLE)
         );
 
+        verify(repository).findByDetailsClientIdAndRoleTitle(CLIENT_ID, ROLE_TITLE);
+    }
+
+    @Test
+    void changeRoleStatusSuccess() {
+        Role role = DbUtils.role();
+        when(authHelper.getClientId()).thenReturn(CLIENT_ID);
+        when(repository.findByDetailsClientIdAndRoleTitle(any(), any())).thenReturn(Optional.of(role));
+        assertDoesNotThrow(() -> service.changeRoleStatus(role.getRoleTitle()));
+
+        verify(repository).findByDetailsClientIdAndRoleTitle(CLIENT_ID, role.getRoleTitle());
+        verify(authHelper).getClientId();
+    }
+
+
+    @Test
+    void changeRoleStatusWhen() {
+        Optional<Role> role = Optional.empty();
+        when(authHelper.getClientId()).thenReturn(CLIENT_ID);
+        when(repository.findByDetailsClientIdAndRoleTitle(any(), any())).thenReturn(role);
+
+        assertThrows(
+            NotFoundException.class,
+            () -> service.changeRoleStatus(ROLE_TITLE)
+        );
+
+        verify(authHelper).getClientId();
         verify(repository).findByDetailsClientIdAndRoleTitle(CLIENT_ID, ROLE_TITLE);
     }
 }
