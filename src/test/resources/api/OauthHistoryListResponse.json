@@ -1,0 +1,10 @@
+{
+  "history": [
+    {
+      "clientSystem": "client id",
+      "operator": "operator",
+      "event": "BLOCKED",
+      "eventDate": "<EVENT_DATE>"
+    }
+  ]
+}
