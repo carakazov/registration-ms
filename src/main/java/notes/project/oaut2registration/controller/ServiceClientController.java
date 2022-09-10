@@ -28,7 +28,7 @@ public class ServiceClientController {
     @ApiOperation(value = "Смена ролей клиента")
     public ChangeServiceClientRolesResponseDto changeServiceClientRoles(
         @PathVariable(name = "externalId") @ApiParam(value = "Внешний ID пользователя") UUID externalId,
-        @RequestBody @Valid ChangeServiceClientRolesRequestDto request
+        @RequestBody @Valid ChangeAssignedResourcesRequestDto<String> request
         ) {
         return serviceClientService.changeServiceClientRole(request, externalId);
     }

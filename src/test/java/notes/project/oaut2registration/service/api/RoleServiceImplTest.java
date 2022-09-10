@@ -1,19 +1,25 @@
 package notes.project.oaut2registration.service.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import notes.project.oaut2registration.dto.ChangeRoleScopesResponseDto;
 import notes.project.oaut2registration.dto.CreateRoleRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
 import notes.project.oaut2registration.model.Role;
 import notes.project.oaut2registration.model.Scope;
+import notes.project.oaut2registration.model.SystemScope;
 import notes.project.oaut2registration.repository.RoleRepository;
 import notes.project.oaut2registration.service.api.impl.RoleServiceImpl;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
+import notes.project.oaut2registration.utils.mapper.ChangeRoleScopesMapper;
 import notes.project.oaut2registration.utils.mapper.CreateRoleMapper;
 import notes.project.oaut2registration.utils.validation.Validator;
+import notes.project.oaut2registration.utils.validation.dto.ChangeAssignedResourcesValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.CreateRoleValidationDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +47,9 @@ class RoleServiceImplTest {
     private Validator<CreateRoleValidationDto> createRoleValidator;
     @Mock
     private AuthHelper authHelper;
+    @Mock
+    private Validator<ChangeAssignedResourcesValidationDto<Scope>> changeRoleScopesValidator;
+
 
     private RoleService service;
 
@@ -52,7 +61,9 @@ class RoleServiceImplTest {
             systemScopeService,
             createRoleValidator,
             Mappers.getMapper(CreateRoleMapper.class),
-            authHelper
+            authHelper,
+            changeRoleScopesValidator,
+            Mappers.getMapper(ChangeRoleScopesMapper.class)
         );
     }
 
@@ -128,5 +139,28 @@ class RoleServiceImplTest {
 
         verify(authHelper).getClientId();
         verify(repository).findByDetailsClientIdAndRoleTitle(CLIENT_ID, ROLE_TITLE);
+    }
+
+    @Test
+    void changeRoleScopesSuccess() {
+        Role role = DbUtils.role();
+        List<SystemScope> scopes = new ArrayList<>();
+        scopes.add(DbUtils.systemScope());
+        role.setScopes(scopes);
+        when(authHelper.getClientId()).thenReturn(CLIENT_ID);
+        when(repository.findByDetailsClientIdAndRoleTitle(any(), any())).thenReturn(Optional.of(role));
+        when(systemScopeService.findBySystemScope(Scope.ANON)).thenReturn(DbUtils.systemScope(Scope.ANON));
+        when(systemScopeService.findBySystemScope(Scope.CHANGE_ROLES)).thenReturn(DbUtils.systemScope(Scope.CHANGE_ROLES));
+
+        ChangeRoleScopesResponseDto expected = ApiUtils.changeRoleScopesResponseDto();
+
+        ChangeRoleScopesResponseDto actual = service.changeScopes(ApiUtils.changeAssignedResourcesRequestDtoScope(), ROLE_TITLE);
+
+        assertEquals(expected, actual);
+
+        verify(authHelper).getClientId();
+        verify(repository).findByDetailsClientIdAndRoleTitle(CLIENT_ID, ROLE_TITLE);
+        verify(systemScopeService).findBySystemScope(Scope.ANON);
+        verify(systemScopeService).findBySystemScope(Scope.CHANGE_ROLES);
     }
 }

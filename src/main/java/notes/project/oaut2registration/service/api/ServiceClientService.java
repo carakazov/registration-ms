@@ -8,7 +8,7 @@ import notes.project.oaut2registration.model.ServiceClient;
 public interface ServiceClientService {
     ServiceClientRegistrationResponseDto registerServiceClient(ServiceClientRegistrationRequestDto request);
 
-    ChangeServiceClientRolesResponseDto changeServiceClientRole(ChangeServiceClientRolesRequestDto request, UUID clientExternalId);
+    ChangeServiceClientRolesResponseDto changeServiceClientRole(ChangeAssignedResourcesRequestDto<String> request, UUID clientExternalId);
 
     ServiceClient findByExternalId(UUID externalId);
 

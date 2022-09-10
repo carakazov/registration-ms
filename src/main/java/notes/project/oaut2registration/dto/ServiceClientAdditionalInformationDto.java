@@ -2,6 +2,7 @@ package notes.project.oaut2registration.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
 import io.swagger.annotations.ApiModel;
@@ -12,6 +13,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @ApiModel(description = "Дополнительная информация по пользователю")
+@Valid
 public class ServiceClientAdditionalInformationDto {
     @ApiModelProperty(value = "Имя")
     private String name;

@@ -1,6 +1,7 @@
 package notes.project.oaut2registration.utils;
 
 import java.util.Collections;
+import java.util.List;
 
 import lombok.experimental.UtilityClass;
 import notes.project.oaut2registration.model.*;
@@ -73,6 +74,6 @@ public class DbUtils {
             .setId(ID)
             .setRoleTitle(ROLE_TITLE)
             .setDetails(oauthClientDetails())
-            .setScopes(Collections.singletonList(systemScope()));
+            .setScopes(List.of(systemScope()));
     }
 }

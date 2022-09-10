@@ -2,7 +2,8 @@
 <jaxb:bindings version="2.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
                xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-               jaxb:extensionBindingPrefixes="xjc">
+               jaxb:extensionBindingPrefixes="xjc"
+>
 
     <jaxb:globalBindings>
         <xjc:simple />
@@ -18,6 +19,14 @@
         </jaxb:bindings>
         <jaxb:bindings node="//xs:element[@name='externalId']">
             <jaxb:javaType name="java.util.UUID" parseMethod="java.util.UUID.fromString"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:element[@name='userInfo']">
+            <jaxb:class name="ServiceClientAdditionalInfoKafkaDto"/>
+        </jaxb:bindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="./xsd/InitializeRestoringPasswordProcessKafkaMessage.xsd">
+        <jaxb:bindings node="//xs:element[@name='restorePasswordRequest']">
+            <jaxb:class name="RestorePasswordRequestKafkaDto"/>
         </jaxb:bindings>
     </jaxb:bindings>
 </jaxb:bindings>

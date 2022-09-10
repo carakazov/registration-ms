@@ -1,0 +1,8 @@
+{
+  "toRemove": [
+    "CHANGE_PASSWORD"
+  ],
+  "toAdd":[
+    "CREATE_ROLE"
+  ]
+}
