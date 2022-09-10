@@ -87,11 +87,15 @@ public abstract class AbstractIntegrationTest {
     }
 
     protected void setSecurityContext(Scope scope) {
+        setSecurityContext(scope.toString());
+    }
+
+    protected void setSecurityContext(String auth) {
         SecurityContextHolder.getContext().setAuthentication(
             new UsernamePasswordAuthenticationToken(
                 CLIENT_ID,
                 new JwtDto().setUserName(USERNAME).setExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID),
-                Collections.singletonList(new SimpleGrantedAuthority(scope.toString()))
+                Collections.singletonList(new SimpleGrantedAuthority(auth))
             )
         );
     }

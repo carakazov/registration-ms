@@ -65,4 +65,8 @@ public class TestDataConstants {
 
     public static final String RESTORE_CODE = "Kg5853C2cI77BdTVGyJGW53sQ";
     public static final String RESTORE_PASSWORD_TOPIC = "restore-password-topic";
+
+    public static final String OPERATOR_CLIENT_ID = "operator";
+    public static final Authority OAUTH_ADMIN_AUTHORITY = Authority.OAUTH_ADMIN;
+    public static final LocalDateTime OUATH_EVENT_DATE = LocalDateTime.of(2022, 10, 12, 10, 10, 10);
 }
