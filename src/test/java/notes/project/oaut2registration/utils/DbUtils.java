@@ -16,7 +16,7 @@ public class DbUtils {
             .setOauthClient(oauthClientDetails())
             .setOauthAdmin(oauthClientDetailsOperator())
             .setOauthEvent(OauthEvent.BLOCKED)
-            .setEventDate(OUATH_EVENT_DATE);
+            .setEventDate(OAUTH_EVENT_DATE);
     }
 
     public static OauthClientDetails oauthClientDetailsOperator() {

@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private static final String OAUTH_CLIENT = "OAUTH_CLIENT";
     private static final String ANON = "ANON";
+    private static final String OAUTH_ADMIN = "OAUTH_ADMIN";
 
     @Autowired
     private InnerScopeFilterService innerScopeFilterService;
@@ -38,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/client/*/changeStatus").hasAuthority("CHANGE_BLOCKED_STATUS")
             .antMatchers("/role/*/changeStatus").hasAuthority("CHANGE_ROLE_STATUS")
             .antMatchers("/role/*/changeScopes").hasAuthority("CHANGE_ROLE_SCOPES")
-            .antMatchers("/auth/*/changeStatus").hasAuthority("OAUTH_ADMIN")
+            .antMatchers("/auth/*/changeStatus").hasAuthority(OAUTH_ADMIN)
+            .antMatchers("/oauth/history").hasAuthority(OAUTH_ADMIN)
             .and()
             .addFilterBefore(new InnerScopeFilter(innerScopeFilterService), BasicAuthenticationFilter.class);
     }
