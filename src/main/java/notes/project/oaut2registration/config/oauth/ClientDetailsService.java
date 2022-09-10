@@ -27,7 +27,7 @@ public class ClientDetailsService implements UserDetailsService {
         try {
             String clientId = request.getParameter("client_id");
             ServiceClient serviceClient = serviceClientRepository.findByUsernameAndOauthClientClientId(username, clientId);
-            if(Boolean.FALSE.equals(serviceClient.getBlocked())) {
+            if(Boolean.FALSE.equals(serviceClient.getBlocked()) && Boolean.FALSE.equals(serviceClient.getOauthClient().getBlocked())) {
                 return new ClientDetails(serviceClient);
             }
             throw new UsernameNotFoundException("User is banned");

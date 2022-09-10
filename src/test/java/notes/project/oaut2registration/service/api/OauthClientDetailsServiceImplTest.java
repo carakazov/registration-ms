@@ -5,11 +5,14 @@ import java.util.Optional;
 import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
+import notes.project.oaut2registration.model.OauthClientHistory;
 import notes.project.oaut2registration.repository.OauthClientDetailsServiceRepository;
 import notes.project.oaut2registration.service.api.impl.OauthClientDetailsServiceImpl;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
+import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.mapper.CreateOauthClientDetailsMapper;
+import notes.project.oaut2registration.utils.mapper.OauthClientHistoryMapper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.SystemRegistrationValidationDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +37,10 @@ class OauthClientDetailsServiceImplTest {
     private Validator<SystemRegistrationValidationDto> registerSystemValidator;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private OauthClientHistoryService oauthClientHistoryService;
+    @Mock
+    private AuthHelper authHelper;
 
     private OauthClientDetailsService service;
 
@@ -43,7 +50,10 @@ class OauthClientDetailsServiceImplTest {
             repository,
             Mappers.getMapper(CreateOauthClientDetailsMapper.class),
             registerSystemValidator,
-            passwordEncoder
+            passwordEncoder,
+            Mappers.getMapper(OauthClientHistoryMapper.class),
+            oauthClientHistoryService,
+            authHelper
         );
     }
 
@@ -90,5 +100,24 @@ class OauthClientDetailsServiceImplTest {
 
         verify(repository).findByClientId(CLIENT_ID);
         verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void changeUserStatusSuccess() {
+        when(authHelper.getClientId()).thenReturn(OPERATOR_CLIENT_ID);
+        when(repository.findByClientId(OPERATOR_CLIENT_ID)).thenReturn(Optional.of(DbUtils.oauthClientDetailsOperator()));
+        when(repository.findByClientId(CLIENT_ID)).thenReturn(Optional.of(DbUtils.oauthClientDetails()));
+        when(oauthClientHistoryService.save(any())).thenReturn(DbUtils.oauthClientHistory());
+
+        service.changeUserStatus(CLIENT_ID);
+
+        OauthClientHistory history = DbUtils.oauthClientHistory();
+        history.getOauthClient().setBlocked(true);
+        history.setId(null).setEventDate(null);
+
+        verify(authHelper).getClientId();
+        verify(repository).findByClientId(OPERATOR_CLIENT_ID);
+        verify(repository).findByClientId(CLIENT_ID);
+        verify(oauthClientHistoryService).save(history);
     }
 }

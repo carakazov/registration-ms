@@ -3,16 +3,16 @@ package notes.project.oaut2registration.it;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import notes.project.oaut2registration.RegistrationSystemApplication;
 import notes.project.oaut2registration.controller.OauthClientDetailsController;
 import notes.project.oaut2registration.model.OauthClientDetails;
+import notes.project.oaut2registration.model.OauthClientHistory;
+import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("it")
@@ -57,5 +58,29 @@ class OauthClientDetailsControllerIntegrationTest extends AbstractIntegrationTes
         ).setParameter("clientId", "my-client-id").getSingleResult();
 
         assertNotNull(details);
+    }
+
+    @Test
+    void changeOauthClientStatusSuccess() throws Exception {
+        setSecurityContext("OAUTH_ADMIN");
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.oauthClientDetailsOperator());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/auth/client id/changeStatus"))
+            .andExpect(status().isOk());
+
+        OauthClientDetails details = testEntityManager.getEntityManager().createQuery(
+            "select details from oauth_client_details details where details.clientId = 'client id'",
+            OauthClientDetails.class
+        ).getSingleResult();
+
+        assertTrue(details.getBlocked());
+
+        OauthClientHistory oauthClientHistory = testEntityManager.getEntityManager().createQuery(
+            "select history from oauth_client_history history where history.id = 1",
+            OauthClientHistory.class
+        ).getSingleResult();
+
+        assertNotNull(oauthClientHistory);
     }
 }

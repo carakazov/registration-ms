@@ -1,7 +1,7 @@
 package notes.project.oaut2registration.model;
 
-import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -34,4 +34,6 @@ public class OauthClientDetails {
     private Boolean autoapprove;
 
     private Boolean anonRegistrationEnabled;
+
+    private Boolean blocked = Boolean.FALSE;
 }

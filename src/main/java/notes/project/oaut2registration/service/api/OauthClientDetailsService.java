@@ -7,4 +7,6 @@ public interface OauthClientDetailsService {
     void registerSystemClient(SystemRegistrationRequestDto request);
 
     OauthClientDetails findByClientId(String clientId);
+
+    void changeUserStatus(String clientId);
 }

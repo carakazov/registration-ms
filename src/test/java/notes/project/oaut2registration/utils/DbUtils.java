@@ -10,6 +10,18 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class DbUtils {
+    public static OauthClientHistory oauthClientHistory() {
+        return new OauthClientHistory()
+            .setId(ID)
+            .setOauthClient(oauthClientDetails())
+            .setOauthAdmin(oauthClientDetailsOperator())
+            .setOauthEvent(OauthEvent.BLOCKED)
+            .setEventDate(OUATH_EVENT_DATE);
+    }
+
+    public static OauthClientDetails oauthClientDetailsOperator() {
+        return oauthClientDetails().setClientId(OPERATOR_CLIENT_ID).setAuthorities(OAUTH_ADMIN_AUTHORITY.toString());
+    }
 
     public static RestorePasswordStruct restorePasswordStruct() {
         return new RestorePasswordStruct()

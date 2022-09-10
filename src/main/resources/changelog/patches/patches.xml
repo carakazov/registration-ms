@@ -24,4 +24,6 @@
    <include file="changelog/patches/change-role-status/change-role-status.xml"/>
    <!--change-role-scopes-->
    <include file="changelog/patches/change-role-scopes/change-role-scopes.xml"/>
+   <!--oauth-client-status-change-->
+   <include file="changelog/patches/change-oauth-client-status/change-oauth-client-status.xml"/>
 </databaseChangeLog>
