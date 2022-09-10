@@ -25,8 +25,8 @@ import notes.project.oaut2registration.utils.mapper.dto.ServiceClientHistoryMapp
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientRegistrationMappingDto;
 import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
+import notes.project.oaut2registration.utils.validation.dto.ChangeAssignedResourcesValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ChangePasswordValidationDto;
-import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.RestorePasswordValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,7 +47,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     private final OauthAccessTokenService oauthAccessTokenService;
     private final ServiceClientHistoryService serviceClientHistoryService;
     private final ServiceClientHistoryMapper serviceClientHistoryMapper;
-    private final Validator<ChangeSystemClientRoleValidationDto> changeServiceClientRolesValidator;
+    private final Validator<ChangeAssignedResourcesValidationDto<String>> changeServiceClientRolesValidator;
     private final ChangeServiceClientRolesResponseMapper changeServiceClientRolesResponseMapper;
     private final Validator<ChangePasswordValidationDto> changePasswordValidator;
     private final RestorePasswordRequestProducer restorePasswordRequestProducer;
@@ -99,17 +99,17 @@ public class ServiceClientServiceImpl implements ServiceClientService {
 
     @Override
     @Transactional
-    public ChangeServiceClientRolesResponseDto changeServiceClientRole(ChangeServiceClientRolesRequestDto request, UUID clientExternalId) {
+    public ChangeServiceClientRolesResponseDto changeServiceClientRole(ChangeAssignedResourcesRequestDto<String> request, UUID clientExternalId) {
         String currentClientId = authHelper.getClientId();
         ServiceClient serviceClient = findByExternalId(clientExternalId);
         changeServiceClientRolesValidator.validate(
-            new ChangeSystemClientRoleValidationDto(
+            new ChangeAssignedResourcesValidationDto<>(
                 serviceClient.getRoles().stream().map(Role::getRoleTitle).collect(Collectors.toList()),
                 request
             )
         );
-        List<Role> roleToAdd = findAllRolesByClientIdAndRoleTitles(currentClientId, request.getRolesToAdd());
-        List<Role> roleToRemove = findAllRolesByClientIdAndRoleTitles(currentClientId, request.getRolesToRemove());
+        List<Role> roleToAdd = findAllRolesByClientIdAndRoleTitles(currentClientId, request.getToAdd());
+        List<Role> roleToRemove = findAllRolesByClientIdAndRoleTitles(currentClientId, request.getToRemove());
         serviceClient.getRoles().removeAll(roleToRemove);
         serviceClient.getRoles().addAll(roleToAdd);
         ServiceClientHistory serviceClientHistory = serviceClientHistoryMapper.to(

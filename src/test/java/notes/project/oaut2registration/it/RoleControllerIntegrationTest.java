@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -81,5 +82,21 @@ class RoleControllerIntegrationTest extends AbstractIntegrationTest {
         ).getSingleResult();
 
         assertTrue(role.getBlocked());
+    }
+
+    @Test
+    void changeRoleScopes() throws Exception {
+        setSecurityContext(Scope.CHANGE_ROLE_SCOPES);
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.role());
+
+        String expected = TestUtils.getClasspathResource("/api/ChangeRoleScopesResponse.json");
+
+        String actual = mockMvc.perform(MockMvcRequestBuilders.put("/role/TEST_ROLE/changeScopes")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtils.getClasspathResource("/api/ChangeRoleScopesRequest.json")))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        JSONAssert.assertEquals(expected, actual, false);
     }
 }

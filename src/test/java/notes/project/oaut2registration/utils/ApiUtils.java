@@ -46,16 +46,28 @@ public class ApiUtils {
             .setNewRoleTitles(Collections.singletonList(ROLE_TO_ADD));
     }
 
-    public static ChangeSystemClientRoleValidationDto changeSystemClientRoleValidationDto() {
-        return new ChangeSystemClientRoleValidationDto()
-            .setServiceClientRoles(Collections.singletonList(ROLE_TO_REMOVE))
-            .setRequest(changeServiceClientRolesRequestDto());
+    public static ChangeRoleScopesResponseDto changeRoleScopesResponseDto() {
+        return new ChangeRoleScopesResponseDto()
+            .setRoleTitle(ROLE_TITLE)
+            .setNewScopesList(Collections.singletonList(Scope.CHANGE_ROLES));
     }
 
-    public static ChangeServiceClientRolesRequestDto changeServiceClientRolesRequestDto() {
-        return new ChangeServiceClientRolesRequestDto()
-            .setRolesToAdd(Collections.singletonList(ROLE_TO_ADD))
-            .setRolesToRemove(Collections.singletonList(ROLE_TO_REMOVE));
+    public static ChangeAssignedResourcesRequestDto<Scope> changeAssignedResourcesRequestDtoScope() {
+        return new ChangeAssignedResourcesRequestDto<Scope>()
+            .setToAdd(Collections.singletonList(Scope.CHANGE_ROLES))
+            .setToRemove(Collections.singletonList(Scope.ANON));
+    }
+
+    public static ChangeAssignedResourcesValidationDto<String> changeSystemClientRoleValidationDtoString() {
+        return new ChangeAssignedResourcesValidationDto<String>()
+            .setExistingList(Collections.singletonList(ROLE_TO_REMOVE))
+            .setRequest(changeServiceClientRolesRequestDtoString());
+    }
+
+    public static ChangeAssignedResourcesRequestDto<String> changeServiceClientRolesRequestDtoString() {
+        return new ChangeAssignedResourcesRequestDto<String>()
+            .setToAdd(Collections.singletonList(ROLE_TO_ADD))
+            .setToRemove(Collections.singletonList(ROLE_TO_REMOVE));
     }
 
     public static ServiceClientRegistrationResponseDto serviceClientRegistrationResponseDto() {

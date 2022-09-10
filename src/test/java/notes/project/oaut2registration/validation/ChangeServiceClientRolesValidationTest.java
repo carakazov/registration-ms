@@ -5,34 +5,34 @@ import java.util.Collections;
 import notes.project.oaut2registration.exception.ValidationException;
 import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.validation.Validator;
-import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
-import notes.project.oaut2registration.utils.validation.impl.ChangeServiceClientRolesValidator;
+import notes.project.oaut2registration.utils.validation.dto.ChangeAssignedResourcesValidationDto;
+import notes.project.oaut2registration.utils.validation.impl.ChangeAssignedResourcesValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static notes.project.oaut2registration.utils.TestDataConstants.ROLE_TO_ADD;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 class ChangeServiceClientRolesValidationTest {
-    private Validator<ChangeSystemClientRoleValidationDto> validator;
+    private Validator<ChangeAssignedResourcesValidationDto> validator;
 
     @BeforeEach
     void init() {
-        validator = new ChangeServiceClientRolesValidator();
+        validator = new ChangeAssignedResourcesValidator();
     }
 
     @Test
     void validateSuccess() {
-        ChangeSystemClientRoleValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDto();
+        ChangeAssignedResourcesValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDtoString();
 
         assertDoesNotThrow(() -> validator.validate(validationDto));
     }
 
     @Test
     void validateThrowWhenSameRoleInBothLists() {
-        ChangeSystemClientRoleValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDto();
-        validationDto.getRequest().setRolesToRemove(Collections.singletonList(ROLE_TO_ADD));
+        ChangeAssignedResourcesValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDtoString();
+        validationDto.getRequest().setToRemove(Collections.singletonList(ROLE_TO_ADD));
 
         assertThrows(
             ValidationException.class,
@@ -42,8 +42,8 @@ class ChangeServiceClientRolesValidationTest {
 
     @Test
     void validateThrowWhenUserNotHaveRole() {
-        ChangeSystemClientRoleValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDto();
-        validationDto.setServiceClientRoles(Collections.singletonList(ROLE_TO_ADD));
+        ChangeAssignedResourcesValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDtoString();
+        validationDto.setExistingList(Collections.singletonList(ROLE_TO_ADD));
 
         assertThrows(
             ValidationException.class,
@@ -53,8 +53,8 @@ class ChangeServiceClientRolesValidationTest {
 
     @Test
     void validateThrowWhenUserAlreadyHasRole() {
-        ChangeSystemClientRoleValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDto();
-        validationDto.setServiceClientRoles(Collections.singletonList(ROLE_TO_ADD));
+        ChangeAssignedResourcesValidationDto validationDto = ApiUtils.changeSystemClientRoleValidationDtoString();
+        validationDto.setExistingList(Collections.singletonList(ROLE_TO_ADD));
 
         assertThrows(
             ValidationException.class,

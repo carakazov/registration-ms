@@ -22,4 +22,6 @@
    <include file="changelog/patches/initialize-restoring-process/initialize-restoring-process.xml"/>
    <!--change-role-status-->
    <include file="changelog/patches/change-role-status/change-role-status.xml"/>
+   <!--change-role-scopes-->
+   <include file="changelog/patches/change-role-scopes/change-role-scopes.xml"/>
 </databaseChangeLog>

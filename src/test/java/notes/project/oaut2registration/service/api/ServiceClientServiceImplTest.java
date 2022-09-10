@@ -22,8 +22,8 @@ import notes.project.oaut2registration.utils.mapper.ServiceClientHistoryMapper;
 import notes.project.oaut2registration.utils.mapper.ServiceClientRegistrationMapper;
 import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
+import notes.project.oaut2registration.utils.validation.dto.ChangeAssignedResourcesValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ChangePasswordValidationDto;
-import notes.project.oaut2registration.utils.validation.dto.ChangeSystemClientRoleValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.RestorePasswordValidationDto;
 import notes.project.oaut2registration.utils.validation.dto.ServiceClientRegistrationValidationDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,7 +64,7 @@ class ServiceClientServiceImplTest {
     @Mock
     private ServiceClientHistoryService serviceClientHistoryService;
     @Mock
-    private Validator<ChangeSystemClientRoleValidationDto> changeServiceClientRolesValidator;
+    private Validator<ChangeAssignedResourcesValidationDto<String>> changeServiceClientRolesValidator;
     @Mock
     private Validator<ChangePasswordValidationDto> changePasswordValidator;
     @Mock
@@ -75,6 +75,7 @@ class ServiceClientServiceImplTest {
     private RestorePasswordStructService restorePasswordStructService;
     @Mock
     private Validator<RestorePasswordValidationDto> restorePasswordValidator;
+
     private ServiceClientService service;
 
     @BeforeEach
@@ -155,7 +156,7 @@ class ServiceClientServiceImplTest {
         when(repository.findByUsernameAndOauthClientClientId(any(), any())).thenReturn(serviceClient);
 
         ChangeServiceClientRolesResponseDto actual = service.changeServiceClientRole(
-            ApiUtils.changeServiceClientRolesRequestDto(),
+            ApiUtils.changeServiceClientRolesRequestDtoString(),
             SERVICE_CLIENT_EXTERNAL_ID
         );
 
