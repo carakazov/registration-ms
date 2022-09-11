@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 import notes.project.oaut2registration.dto.*;
 import notes.project.oaut2registration.exception.ExceptionCode;
 import notes.project.oaut2registration.exception.ValidationException;
+import notes.project.oaut2registration.model.HistoryEvent;
 import notes.project.oaut2registration.model.OauthEvent;
 import notes.project.oaut2registration.model.Scope;
 import notes.project.oaut2registration.utils.validation.dto.*;
@@ -14,6 +15,18 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+    public static ServiceClientHistoryListResponseDto serviceClientHistoryListResponseDto() {
+        return new ServiceClientHistoryListResponseDto(Collections.singletonList(serviceClientHistoryDto()));
+    }
+
+    public static ServiceClientHistoryDto serviceClientHistoryDto() {
+        return new ServiceClientHistoryDto()
+            .setUsername(USERNAME)
+            .setOperator(OPERATOR_USERNAME)
+            .setEvent(HistoryEvent.BLOCKED)
+            .setEventDate(EVENT_DATE);
+    }
+
     public static OauthClientHistoryListResponseDto oauthClientHistoryListResponseDto() {
         return new OauthClientHistoryListResponseDto(Collections.singletonList(oauthClientHistoryDto()));
     }

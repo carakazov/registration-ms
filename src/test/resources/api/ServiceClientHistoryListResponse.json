@@ -1,0 +1,9 @@
+{
+  "history": [
+    {
+      "username": "username",
+      "operator": "operator_username",
+      "event": "BLOCKED"
+    }
+  ]
+}

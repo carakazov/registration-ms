@@ -42,7 +42,7 @@ public class DbUtils {
     }
 
     public static ServiceClient operator() {
-        return serviceClient().setId(ID_2).setExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID);
+        return serviceClient().setId(ID_2).setExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID).setUsername(OPERATOR_USERNAME);
     }
 
     public static ServiceClient serviceClient() {
