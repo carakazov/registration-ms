@@ -100,6 +100,17 @@ public abstract class AbstractIntegrationTest {
         );
     }
 
+    protected void setSecurityContext(String auth, String clientId) {
+        SecurityContextHolder.getContext().setAuthentication(
+            new UsernamePasswordAuthenticationToken(
+                clientId,
+                new JwtDto().setUserName(USERNAME).setExternalId(OPERATOR_SERVICE_CLIENT_EXTERNAL_ID),
+                Collections.singletonList(new SimpleGrantedAuthority(auth))
+            )
+        );
+    }
+
+
     protected ServiceClient getServiceClient() {
        return testEntityManager.getEntityManager().createQuery(
             "select service_client from service_clients service_client where service_client.id = 1",

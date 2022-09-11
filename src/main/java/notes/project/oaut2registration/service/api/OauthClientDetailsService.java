@@ -1,5 +1,7 @@
 package notes.project.oaut2registration.service.api;
 
+import notes.project.oaut2registration.dto.ClientDtoListResponseDto;
+import notes.project.oaut2registration.dto.OauthClientDto;
 import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.model.OauthClientDetails;
 
@@ -9,4 +11,6 @@ public interface OauthClientDetailsService {
     OauthClientDetails findByClientId(String clientId);
 
     void changeUserStatus(String clientId);
+
+    ClientDtoListResponseDto<OauthClientDto> getClientList();
 }

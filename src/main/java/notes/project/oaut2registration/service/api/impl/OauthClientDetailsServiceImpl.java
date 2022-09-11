@@ -1,8 +1,12 @@
 package notes.project.oaut2registration.service.api.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import notes.project.oaut2registration.dto.ClientDtoListResponseDto;
+import notes.project.oaut2registration.dto.OauthClientDto;
 import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
@@ -13,6 +17,7 @@ import notes.project.oaut2registration.service.api.OauthClientDetailsService;
 import notes.project.oaut2registration.service.api.OauthClientHistoryService;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.mapper.CreateOauthClientDetailsMapper;
+import notes.project.oaut2registration.utils.mapper.OauthClientDetailsListMapper;
 import notes.project.oaut2registration.utils.mapper.OauthClientHistoryMapper;
 import notes.project.oaut2registration.utils.mapper.dto.OauthClientHistoryMappingDto;
 import notes.project.oaut2registration.utils.validation.Validator;
@@ -30,6 +35,7 @@ public class OauthClientDetailsServiceImpl implements OauthClientDetailsService 
     private final OauthClientHistoryMapper oauthClientHistoryMapper;
     private final OauthClientHistoryService oauthClientHistoryService;
     private final AuthHelper authHelper;
+    private final OauthClientDetailsListMapper oauthClientDetailsListMapper;
 
     @Override
     @Transactional
@@ -65,5 +71,15 @@ public class OauthClientDetailsServiceImpl implements OauthClientDetailsService 
             )
         );
         oauthClientHistoryService.save(oauthClientHistory);
+    }
+
+    @Override
+    @Transactional
+    public ClientDtoListResponseDto<OauthClientDto> getClientList() {
+        String clientId = authHelper.getClientId();
+        List<OauthClientDetails> details = repository.findAll().stream()
+            .filter(item -> !item.getClientId().equals(clientId))
+            .collect(Collectors.toList());
+        return new ClientDtoListResponseDto<>(oauthClientDetailsListMapper.to(details));
     }
 }

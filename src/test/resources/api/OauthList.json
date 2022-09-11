@@ -1,0 +1,12 @@
+{
+  "clients": [
+    {
+      "username":"client id",
+      "blocked":false
+    },
+    {
+      "username":"operator",
+      "blocked":false
+    }
+  ]
+}

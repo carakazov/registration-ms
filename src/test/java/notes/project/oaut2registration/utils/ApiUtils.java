@@ -15,6 +15,16 @@ import static notes.project.oaut2registration.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+    public static ClientDtoListResponseDto<OauthClientDto> oauthClientResponseDto() {
+        return new ClientDtoListResponseDto<>(Collections.singletonList(oauthClientDto()));
+    }
+
+    public static OauthClientDto oauthClientDto() {
+        return new OauthClientDto()
+            .setUsername(CLIENT_ID)
+            .setBlocked(Boolean.FALSE);
+    }
+
     public static ServiceClientHistoryListResponseDto serviceClientHistoryListResponseDto() {
         return new ServiceClientHistoryListResponseDto(Collections.singletonList(serviceClientHistoryDto()));
     }

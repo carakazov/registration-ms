@@ -59,7 +59,7 @@ class OauthHistoryControllerIntegrationTest extends AbstractIntegrationTest {
         ).getSingleResult();
 
         String expected = TestUtils.getClasspathResource("/api/OauthHistoryListResponse.json")
-            .replace("<EVENT_DATE>", history.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSSSSSS")));
+            .replace("<EVENT_DATE>", history.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")));
 
         JSONAssert.assertEquals(expected, actual, true);
     }

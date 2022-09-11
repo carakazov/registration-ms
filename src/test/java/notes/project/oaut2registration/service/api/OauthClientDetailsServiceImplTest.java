@@ -1,7 +1,10 @@
 package notes.project.oaut2registration.service.api;
 
+import java.util.Collections;
 import java.util.Optional;
 
+import notes.project.oaut2registration.dto.ClientDtoListResponseDto;
+import notes.project.oaut2registration.dto.OauthClientDto;
 import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.exception.NotFoundException;
 import notes.project.oaut2registration.model.OauthClientDetails;
@@ -12,6 +15,7 @@ import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.mapper.CreateOauthClientDetailsMapper;
+import notes.project.oaut2registration.utils.mapper.OauthClientDetailsListMapper;
 import notes.project.oaut2registration.utils.mapper.OauthClientHistoryMapper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.SystemRegistrationValidationDto;
@@ -53,7 +57,8 @@ class OauthClientDetailsServiceImplTest {
             passwordEncoder,
             Mappers.getMapper(OauthClientHistoryMapper.class),
             oauthClientHistoryService,
-            authHelper
+            authHelper,
+            Mappers.getMapper(OauthClientDetailsListMapper.class)
         );
     }
 
@@ -119,5 +124,20 @@ class OauthClientDetailsServiceImplTest {
         verify(repository).findByClientId(OPERATOR_CLIENT_ID);
         verify(repository).findByClientId(CLIENT_ID);
         verify(oauthClientHistoryService).save(history);
+    }
+
+    @Test
+    void getClientListSuccess() {
+        when(authHelper.getClientId()).thenReturn(OPERATOR_CLIENT_ID);
+        when(repository.findAll()).thenReturn(Collections.singletonList(DbUtils.oauthClientDetails()));
+
+        ClientDtoListResponseDto<OauthClientDto> expected = ApiUtils.oauthClientResponseDto();
+
+        ClientDtoListResponseDto<OauthClientDto> actual = service.getClientList();
+
+        assertEquals(expected, actual);
+
+        verify(authHelper).getClientId();
+        verify(repository).findAll();
     }
 }

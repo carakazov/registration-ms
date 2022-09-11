@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -82,5 +83,19 @@ class OauthClientDetailsControllerIntegrationTest extends AbstractIntegrationTes
         ).getSingleResult();
 
         assertNotNull(oauthClientHistory);
+    }
+
+    @Test
+    void getOauthClients() throws Exception {
+        setSecurityContext("OAUTH_ADMIN", "super-admin");
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.oauthClientDetailsOperator());
+
+        String actual = mockMvc.perform(MockMvcRequestBuilders.get("/auth/clients")).andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsString();
+
+        String expected = TestUtils.getClasspathResource("/api/OauthList.json");
+
+        JSONAssert.assertEquals(expected, actual, false);
     }
 }
