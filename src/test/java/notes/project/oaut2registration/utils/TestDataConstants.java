@@ -69,4 +69,5 @@ public class TestDataConstants {
     public static final String OPERATOR_CLIENT_ID = "operator";
     public static final Authority OAUTH_ADMIN_AUTHORITY = Authority.OAUTH_ADMIN;
     public static final LocalDateTime OAUTH_EVENT_DATE = LocalDateTime.of(2022, 10, 12, 10, 10, 10);
+    public static final String OPERATOR_USERNAME = "operator_username";
 }

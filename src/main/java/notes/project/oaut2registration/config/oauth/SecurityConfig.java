@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/role/*/changeScopes").hasAuthority("CHANGE_ROLE_SCOPES")
             .antMatchers("/auth/*/changeStatus").hasAuthority(OAUTH_ADMIN)
             .antMatchers("/oauth/history").hasAuthority(OAUTH_ADMIN)
+            .antMatchers("/history").hasAuthority("GET_SERVICE_CLIENT_HISTORY")
             .and()
             .addFilterBefore(new InnerScopeFilter(innerScopeFilterService), BasicAuthenticationFilter.class);
     }
