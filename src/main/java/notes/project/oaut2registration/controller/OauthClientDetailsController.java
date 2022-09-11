@@ -6,6 +6,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import notes.project.oaut2registration.dto.ClientDtoListResponseDto;
+import notes.project.oaut2registration.dto.OauthClientDto;
 import notes.project.oaut2registration.dto.SystemRegistrationRequestDto;
 import notes.project.oaut2registration.service.api.OauthClientDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +29,11 @@ public class OauthClientDetailsController {
     @ApiOperation(value = "Изменения статуса клиента")
     public void changeOauthClientStatus(@PathVariable(name = "clientId") @ApiParam("Название системы") String clientId) {
         oauthClientDetailsService.changeUserStatus(clientId);
+    }
+
+    @GetMapping("/clients")
+    @ApiOperation(value = "Запрос всех клиентов сервиса")
+    public ClientDtoListResponseDto<OauthClientDto> getOauthClients() {
+        return oauthClientDetailsService.getClientList();
     }
 }
