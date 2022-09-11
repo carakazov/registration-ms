@@ -1,0 +1,13 @@
+{
+  "clients": [
+    {
+      "username": "operator_username",
+      "blocked": false,
+      "externalId": "<CLIENT_EXTERNAL_ID_PLACEHOLDER>",
+      "registrationDate" : "<REGISTRATION_DATE_PLACEHOLDER>",
+      "roles": [
+        "TEST_ROLE"
+      ]
+    }
+  ]
+}

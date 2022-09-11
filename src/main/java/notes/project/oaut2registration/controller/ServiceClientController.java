@@ -59,4 +59,10 @@ public class ServiceClientController {
     public void changeStatus(@PathVariable(name = "externalId") @ApiParam(value = "Внешний ID пользователя") UUID clientExternalId) {
         serviceClientService.changeUserStatus(clientExternalId);
     }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "Запрос всех пользователей некой системы")
+    public ClientDtoListResponseDto<ServiceClientDto> getServiceClientsList() {
+        return serviceClientService.getServiceClientsList();
+    }
 }

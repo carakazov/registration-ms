@@ -28,4 +28,6 @@
    <include file="changelog/patches/change-oauth-client-status/change-oauth-client-status.xml"/>
    <!--get-service-client-history-->
    <include file="changelog/patches/get-service-client-history/get-service-client-history.xml"/>
+   <!--get-service-clients-list-->
+   <include file="changelog/patches/get-service-clients-list/get-service-clients-list.xml"/>
 </databaseChangeLog>
