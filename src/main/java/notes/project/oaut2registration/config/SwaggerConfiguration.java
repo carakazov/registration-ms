@@ -39,8 +39,8 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-            "Какой-то сервис", //FIXME
-            "Какое-то описание", //FIXME
+            "Сервис для регистрации и авторизации",
+            "Регистрирует и авторизует",
             "1.0.0",
             "Берите да пользуйтесь",
             contact(),

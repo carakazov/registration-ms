@@ -19,6 +19,19 @@ public class ApiUtils {
         return new ClientDtoListResponseDto<>(Collections.singletonList(oauthClientDto()));
     }
 
+    public static ClientDtoListResponseDto<ServiceClientDto> serviceClientResponseDto() {
+        return new ClientDtoListResponseDto<>(Collections.singletonList(serviceClientDto()));
+    }
+
+    public static ServiceClientDto serviceClientDto() {
+        return (ServiceClientDto) new ServiceClientDto()
+            .setExternalId(SERVICE_CLIENT_EXTERNAL_ID)
+            .setRegistrationDate(REGISTRATION_DATE)
+            .setRoles(Collections.singletonList(ROLE_TITLE))
+            .setUsername(USERNAME)
+            .setBlocked(Boolean.FALSE);
+    }
+
     public static OauthClientDto oauthClientDto() {
         return new OauthClientDto()
             .setUsername(CLIENT_ID)

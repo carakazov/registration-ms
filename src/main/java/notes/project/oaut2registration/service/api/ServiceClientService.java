@@ -21,4 +21,6 @@ public interface ServiceClientService {
     void changeUserStatus(UUID externalId);
 
     void deleteTokenOfAllServiceClientOfRole(String roleTitle);
+
+    ClientDtoListResponseDto<ServiceClientDto> getServiceClientsList();
 }

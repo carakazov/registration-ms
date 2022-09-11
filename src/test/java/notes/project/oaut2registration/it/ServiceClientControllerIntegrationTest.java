@@ -203,4 +203,29 @@ class ServiceClientControllerIntegrationTest extends AbstractIntegrationTest {
         assertNotNull(serviceClientHistory);
         assertTrue(serviceClient.getBlocked());
     }
+
+    @Test
+    void getServiceClientListSuccess() throws Exception {
+        setSecurityContext("GET_SERVICE_CLIENTS_LIST");
+        testEntityManager.merge(DbUtils.oauthClientDetails());
+        testEntityManager.merge(DbUtils.oauthClientDetailsOperator());
+        testEntityManager.merge(DbUtils.role());
+        testEntityManager.merge(DbUtils.serviceClient());
+        testEntityManager.merge(DbUtils.operator());
+
+        String actual = mockMvc.perform(MockMvcRequestBuilders.get("/client"))
+            .andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsString();
+
+        ServiceClient serviceClient = testEntityManager.getEntityManager().createQuery(
+            "select client from service_clients client where client.id = 2",
+            ServiceClient.class
+        ).getSingleResult();
+
+        String expected = TestUtils.getClasspathResource("/api/ServiceClientsList.json")
+            .replace(REGISTRATION_DATE_PLACEHOLDER, serviceClient.getRegistrationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")))
+            .replace(CLIENT_EXTERNAL_ID_PLACEHOLDER, serviceClient.getExternalId().toString());
+
+        JSONAssert.assertEquals(expected, actual, false);
+    }
 }

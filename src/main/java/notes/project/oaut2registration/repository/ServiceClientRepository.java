@@ -16,4 +16,5 @@ public interface ServiceClientRepository extends JpaRepository<ServiceClient, Lo
     Optional<ServiceClient> findByExternalId(UUID externalId);
     Optional<ServiceClient> findByExternalIdAndOauthClientClientId(UUID externalId, String clientId);
     List<ServiceClient> findAllByRolesContaining(Role role);
+    List<ServiceClient> findAllByOauthClientClientId(String clientId);
 }

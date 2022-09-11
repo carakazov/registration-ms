@@ -16,10 +16,7 @@ import notes.project.oaut2registration.service.integration.RestorePasswordReques
 import notes.project.oaut2registration.service.integration.ServiceClientRegistrationProducer;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.code.RestoreCodeGenerator;
-import notes.project.oaut2registration.utils.mapper.ChangeServiceClientRolesResponseMapper;
-import notes.project.oaut2registration.utils.mapper.RestorePasswordStructMapper;
-import notes.project.oaut2registration.utils.mapper.ServiceClientHistoryMapper;
-import notes.project.oaut2registration.utils.mapper.ServiceClientRegistrationMapper;
+import notes.project.oaut2registration.utils.mapper.*;
 import notes.project.oaut2registration.utils.mapper.dto.RestorePasswordStructMappingDto;
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientHistoryMappingDto;
 import notes.project.oaut2registration.utils.mapper.dto.ServiceClientRegistrationMappingDto;
@@ -55,6 +52,7 @@ public class ServiceClientServiceImpl implements ServiceClientService {
     private final RestoreCodeGenerator restoreCodeGenerator;
     private final RestorePasswordStructService restorePasswordStructService;
     private final Validator<RestorePasswordValidationDto> restorePasswordValidator;
+    private final ServiceListMapper serviceListMapper;
 
 
     @Override
@@ -205,6 +203,17 @@ public class ServiceClientServiceImpl implements ServiceClientService {
         Role role = roleService.findByClientIdAndRoleTitle(clientId, roleTitle);
         List<ServiceClient> clients = repository.findAllByRolesContaining(role);
         clients.forEach(item -> oauthAccessTokenService.deleteAccessTokenByClientIdAndUserName(clientId, item.getUsername()));
+    }
+
+    @Override
+    @Transactional
+    public ClientDtoListResponseDto<ServiceClientDto> getServiceClientsList() {
+        String clientId = authHelper.getClientId();
+        String username = authHelper.getCurrentUserName();
+        List<ServiceClient> clients = repository.findAllByOauthClientClientId(clientId).stream()
+            .filter(item -> !item.getUsername().equals(username))
+            .collect(Collectors.toList());
+        return new ClientDtoListResponseDto<>(serviceListMapper.to(clients));
     }
 
     private void changePassword(ServiceClient serviceClient, ChangePasswordRequestDto request) {

@@ -16,10 +16,7 @@ import notes.project.oaut2registration.utils.ApiUtils;
 import notes.project.oaut2registration.utils.DbUtils;
 import notes.project.oaut2registration.utils.auth.AuthHelper;
 import notes.project.oaut2registration.utils.code.RestoreCodeGenerator;
-import notes.project.oaut2registration.utils.mapper.ChangeServiceClientRolesResponseMapper;
-import notes.project.oaut2registration.utils.mapper.RestorePasswordStructMapper;
-import notes.project.oaut2registration.utils.mapper.ServiceClientHistoryMapper;
-import notes.project.oaut2registration.utils.mapper.ServiceClientRegistrationMapper;
+import notes.project.oaut2registration.utils.mapper.*;
 import notes.project.oaut2registration.utils.uuid.UuidHelper;
 import notes.project.oaut2registration.utils.validation.Validator;
 import notes.project.oaut2registration.utils.validation.dto.ChangeAssignedResourcesValidationDto;
@@ -100,7 +97,8 @@ class ServiceClientServiceImplTest {
             Mappers.getMapper(RestorePasswordStructMapper.class),
             restoreCodeGenerator,
             restorePasswordStructService,
-            restorePasswordValidator
+            restorePasswordValidator,
+            Mappers.getMapper(ServiceListMapper.class)
         );
     }
 
@@ -318,5 +316,22 @@ class ServiceClientServiceImplTest {
         verify(roleService).findByClientIdAndRoleTitle(CLIENT_ID, ROLE_TITLE);
         verify(repository).findAllByRolesContaining(DbUtils.role());
         verify(oauthAccessTokenService).deleteAccessTokenByClientIdAndUserName(CLIENT_ID, USERNAME);
+    }
+
+    @Test
+    void getServiceClientsListSuccess() {
+        when(authHelper.getClientId()).thenReturn(CLIENT_ID);
+        when(authHelper.getCurrentUserName()).thenReturn(OPERATOR_USERNAME);
+        when(repository.findAllByOauthClientClientId(any())).thenReturn(Collections.singletonList(DbUtils.serviceClient()));
+
+        ClientDtoListResponseDto<ServiceClientDto> expected = ApiUtils.serviceClientResponseDto();
+
+        ClientDtoListResponseDto<ServiceClientDto> actual = service.getServiceClientsList();
+
+        assertEquals(expected, actual);
+
+        verify(authHelper).getClientId();
+        verify(authHelper).getCurrentUserName();
+        verify(repository).findAllByOauthClientClientId(CLIENT_ID);
     }
 }
