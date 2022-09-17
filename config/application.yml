@@ -23,8 +23,8 @@ spring:
           destination: additional.info.topic
           group: registration.ms.group
         restore-password-topic:
-          destinaion: restore.password.topic
-          goup: registration.ms.group
+          destination: restore.password.topic
+          group: registration.ms.group
 
 
 
