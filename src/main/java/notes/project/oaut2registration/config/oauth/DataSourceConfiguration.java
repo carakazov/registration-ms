@@ -15,9 +15,9 @@ public class DataSourceConfiguration {
     @Profile("!it")
     public DataSource dataSource() {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setServerName("localhost");
-        dataSource.setDatabaseName("registration_service");
-        dataSource.setUser("registration_service_user");
+        dataSource.setServerName("registration-ms-postgres");
+        dataSource.setDatabaseName("registration_system");
+        dataSource.setUser("registration_system_user");
         dataSource.setPassword("1q2w3e");
         return dataSource;
 

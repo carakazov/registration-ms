@@ -25,7 +25,7 @@ public class InnerScopeFilterServiceImpl implements InnerScopeFilterService {
 
     @Override
     @Transactional
-    public List<String> extractScopes(JwtDto jwtDto) {
+    public List<String>   extractScopes(JwtDto jwtDto) {
         List<String> authorities = Arrays.asList(jwtDto.getAuthorities());
         if(authorities.stream().anyMatch(item -> item.contains(OAUTH_SERVICE_ROLE_PREFIX))) {
             return authorities;

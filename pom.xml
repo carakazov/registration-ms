@@ -101,6 +101,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+            <version>42.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -222,7 +223,16 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-vault-config</artifactId>
+            <version>3.1.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -302,6 +312,49 @@
                         <version>1.1.1</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>download-xjc</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>http://localhost:8999/content</url>
+                            <fromFile>global.xjb</fromFile>
+                            <toDir>src/main/resources/xjc</toDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-xsd-1</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>http://localhost:8999/content</url>
+                            <fromFile>xsd/InitializeRestoringPasswordProcessKafkaMessage.xsd</fromFile>
+                            <toDir>src/main/resources/xjc/xsd</toDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-xsd-2</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>http://localhost:8999/content</url>
+                            <fromFile>xsd/ServiceRegistrationKafkaResponse.xsd</fromFile>
+                            <toDir>src/main/resources/xjc/xsd</toDir>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -3,6 +3,7 @@ package notes.project.oaut2registration.config.oauth;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.*;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
@@ -19,19 +20,35 @@ public class KeyPairConfiguration {
 
     @Bean
     public KeyPair keyPair() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
-        File publicKeyFile = new File(PUBLIC_KEY_FILE);
-        File privateKeyFile = new File(PRIVATE_KEY_FILE);
 
-        KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
+        if(Files.exists(Path.of(PRIVATE_KEY_FILE)) && Files.exists(Path.of(PUBLIC_KEY_FILE))) {
+            File publicKeyFile = new File(PUBLIC_KEY_FILE);
+            File privateKeyFile = new File(PRIVATE_KEY_FILE);
 
-        byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
-        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
-        PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
+            byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
+            EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+            PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
 
-        byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
-        EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-        PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+            byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
+            EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+            PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 
-        return new KeyPair(publicKey, privateKey);
+            return new KeyPair(publicKey, privateKey);
+        }
+
+        KeyPair keyPair = generateKeyPair();
+        Path privatePath = Files.createFile(Path.of(PRIVATE_KEY_FILE));
+        Files.write(privatePath, keyPair.getPrivate().getEncoded());
+        Path publicPath = Files.createFile(Path.of(PUBLIC_KEY_FILE));
+        Files.write(publicPath, keyPair.getPrivate().getEncoded());
+
+        return keyPair;
+    }
+
+    private KeyPair generateKeyPair() throws NoSuchAlgorithmException {
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        gen.initialize(2048);
+        return gen.generateKeyPair();
     }
 }

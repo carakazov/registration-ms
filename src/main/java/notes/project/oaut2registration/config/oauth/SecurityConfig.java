@@ -10,10 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     private static final String OAUTH_CLIENT = "OAUTH_CLIENT";
     private static final String ANON = "ANON";
     private static final String OAUTH_ADMIN = "OAUTH_ADMIN";
@@ -31,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
+            .antMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs","webjars/**").permitAll()
             .antMatchers("/role").hasAnyAuthority(OAUTH_CLIENT,"CREATE_ROLE")
             .antMatchers("/client").hasAnyAuthority(OAUTH_CLIENT, "REGISTER_USER", ANON)
             .antMatchers("/client/*/changeRoles").hasAnyAuthority("CHANGE_ROLES")
@@ -45,6 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/auth/clients").hasAuthority(OAUTH_ADMIN)
             .antMatchers("/client/list").hasAuthority("GET_SERVICE_CLIENTS_LIST")
             .and()
-            .addFilterBefore(new InnerScopeFilter(innerScopeFilterService), BasicAuthenticationFilter.class);
+            .cors()
+            .and()
+            .addFilterBefore(new InnerScopeFilter(innerScopeFilterService), BasicAuthenticationFilter.class)
+            .addFilterAt(new SimpleCorsFilter(), CorsFilter.class);
     }
 }
